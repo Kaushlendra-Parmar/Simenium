@@ -33,7 +33,10 @@ window.SimeniumMobileOptimizer = {
             } : 'unknown'
         };
         
-        console.log('📱 Device capabilities:', capabilities);
+        // Only log in debug mode
+        if (window.location.search.includes('debug=true')) {
+            console.log('📱 Device capabilities:', capabilities);
+        }
         return capabilities;
     },
     
@@ -42,7 +45,10 @@ window.SimeniumMobileOptimizer = {
         const capabilities = this.getDeviceCapabilities();
         
         if (capabilities.isMobile) {
-            console.log('📱 Applying mobile optimizations...');
+            // Only log in debug mode
+            if (window.location.search.includes('debug=true')) {
+                console.log('📱 Applying mobile optimizations...');
+            }
             
             // Reduce quality for mobile devices
             this.reduceMobileQuality();

@@ -9,14 +9,18 @@ window.SimeniumCanvasValidator = {
         const canvas = document.getElementById(canvasId);
         
         if (!canvas) {
-            console.error(`❌ Canvas element '${canvasId}' not found`);
+            if (window.location.search.includes('debug=true')) {
+                console.error(`❌ Canvas element '${canvasId}' not found`);
+            }
             this.showCanvasError('Canvas element not found');
             return null;
         }
         
         // Check if canvas is in DOM
         if (!document.body.contains(canvas)) {
-            console.error(`❌ Canvas element '${canvasId}' not attached to DOM`);
+            if (window.location.search.includes('debug=true')) {
+                console.error(`❌ Canvas element '${canvasId}' not attached to DOM`);
+            }
             this.showCanvasError('Canvas element not properly attached');
             return null;
         }
@@ -24,7 +28,9 @@ window.SimeniumCanvasValidator = {
         // Check canvas dimensions
         const rect = canvas.getBoundingClientRect();
         if (rect.width === 0 || rect.height === 0) {
-            console.warn(`⚠️ Canvas element '${canvasId}' has zero dimensions`);
+            if (window.location.search.includes('debug=true')) {
+                console.warn(`⚠️ Canvas element '${canvasId}' has zero dimensions`);
+            }
             // Set minimum dimensions
             canvas.style.width = '100vw';
             canvas.style.height = '100vh';

@@ -334,7 +334,7 @@
                     </a>                      <!-- Active Card: Cells -->
                     <a href="cells/index.html" class="bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col transition-all duration-300 hover:shadow-2xl hover:scale-105 no-underline">
                         <div class="w-full h-72 bg-slate-100 flex items-center justify-center">
-                            <img src="cells/thumbnail.png" alt="Cells Preview" class="thumbnail-image object-contain w-full h-full" loading="eager" />
+                            <img src="cells/thumbnail.png" alt="Cells Preview" class="thumbnail-image object-contain w-full h-full" loading="lazy" />
                         </div>
                         <div class="p-4 flex-grow flex flex-col">
                             <h3 class="text-lg font-semibold text-deep-blue-gray mb-1">Cell Biology</h3>
@@ -344,7 +344,7 @@
                     </a>                      <!-- Active Card: DNA & RNA -->
                     <a href="dna & rna/index.html" class="bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col transition-all duration-300 hover:shadow-2xl hover:scale-105 no-underline">
                         <div class="w-full h-72 bg-slate-100 flex items-center justify-center">
-                            <img src="dna & rna/thumbnail.png" alt="DNA & RNA Preview" class="thumbnail-image object-contain w-full h-full" loading="eager" />                        </div>
+                            <img src="dna & rna/thumbnail.png" alt="DNA & RNA Preview" class="thumbnail-image object-contain w-full h-full" loading="lazy" />                        </div>
                         <div class="p-4 flex-grow flex flex-col">
                             <h3 class="text-lg font-semibold text-deep-blue-gray mb-1">DNA & RNA</h3>
                             <p class="text-xs font-medium text-sky-blue mb-0.5">Biology</p>
@@ -353,7 +353,7 @@
                     </a>                      <!-- Active Card: Digestive System -->
                     <a href="digestive system/index.html" class="bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col transition-all duration-300 hover:shadow-2xl hover:scale-105 no-underline">
                         <div class="w-full h-72 bg-slate-100 flex items-center justify-center">
-                            <img src="digestive system/thumbnail.png" alt="Digestive System Preview" class="thumbnail-image object-contain w-full h-full" loading="eager" />
+                            <img src="digestive system/thumbnail.png" alt="Digestive System Preview" class="thumbnail-image object-contain w-full h-full" loading="lazy" />
                         </div>
                         <div class="p-4 flex-grow flex flex-col">
                             <h3 class="text-lg font-semibold text-deep-blue-gray mb-1">Digestive System</h3>
@@ -363,7 +363,7 @@
                     </a>                      <!-- Active Card: Neuron -->
                     <a href="neuron/index.html" class="bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col transition-all duration-300 hover:shadow-2xl hover:scale-105 no-underline">
                         <div class="w-full h-72 bg-slate-100 flex items-center justify-center">
-                            <img src="neuron/thumbnail.png" alt="Neuron Preview" class="thumbnail-image object-contain w-full h-full" loading="eager" />
+                            <img src="neuron/thumbnail.png" alt="Neuron Preview" class="thumbnail-image object-contain w-full h-full" loading="lazy" />
                         </div>
                         <div class="p-4 flex-grow flex flex-col">
                             <h3 class="text-lg font-semibold text-deep-blue-gray mb-1">Neuron</h3>
@@ -373,7 +373,7 @@
                     </a>                      <!-- Active Card: Solar System -->
                     <a href="solar system/index.html" class="bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col transition-all duration-300 hover:shadow-2xl hover:scale-105 no-underline">
                         <div class="w-full h-72 bg-slate-100 flex items-center justify-center">
-                            <img src="solar system/thumbnail.png" alt="Solar System Preview" class="thumbnail-image object-contain w-full h-full" loading="eager" />                        </div>
+                            <img src="solar system/thumbnail.png" alt="Solar System Preview" class="thumbnail-image object-contain w-full h-full" loading="lazy" />                        </div>
                         <div class="p-4 flex-grow flex flex-col">
                             <h3 class="text-lg font-semibold text-deep-blue-gray mb-1">Solar System</h3>
                             <p class="text-xs font-medium text-sky-blue mb-0.5">Astronomy</p>
@@ -382,7 +382,7 @@
                     </a>                      <!-- Active Card: Water Cycle -->
                     <a href="water cycle/index.html" class="bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col transition-all duration-300 hover:shadow-2xl hover:scale-105 no-underline">
                         <div class="w-full h-72 bg-slate-100 flex items-center justify-center">
-                            <img src="water cycle/thumbnail.png" alt="Water Cycle Preview" class="thumbnail-image object-contain w-full h-full" loading="eager" />
+                            <img src="water cycle/thumbnail.png" alt="Water Cycle Preview" class="thumbnail-image object-contain w-full h-full" loading="lazy" />
                         </div>
                         <div class="p-4 flex-grow flex flex-col">
                             <h3 class="text-lg font-semibold text-deep-blue-gray mb-1">Water Cycle</h3>
@@ -497,27 +497,36 @@
     
     // Category filtering functionality
     let dropdownTimeout;
+    let dropdownContent = null; // Cache dropdown reference
     
     function showDropdown() {
         clearTimeout(dropdownTimeout);
-        const dropdown = document.querySelector('.dropdown-content');
-        dropdown.style.display = 'block';
-        setTimeout(() => {
-            dropdown.style.opacity = '1';
-            dropdown.style.visibility = 'visible';
-        }, 10);
+        if (!dropdownContent) {
+            dropdownContent = document.querySelector('.dropdown-content');
+        }
+        if (dropdownContent) {
+            dropdownContent.style.display = 'block';
+            setTimeout(() => {
+                dropdownContent.style.opacity = '1';
+                dropdownContent.style.visibility = 'visible';
+            }, 10);
+        }
     }
     
     function hideDropdown() {
         dropdownTimeout = setTimeout(() => {
-            const dropdown = document.querySelector('.dropdown-content');
-            dropdown.style.opacity = '0';
-            dropdown.style.visibility = 'hidden';
-            setTimeout(() => {
-                if (dropdown.style.opacity === '0') {
-                    dropdown.style.display = 'none';
-                }
-            }, 200);
+            if (!dropdownContent) {
+                dropdownContent = document.querySelector('.dropdown-content');
+            }
+            if (dropdownContent) {
+                dropdownContent.style.opacity = '0';
+                dropdownContent.style.visibility = 'hidden';
+                setTimeout(() => {
+                    if (dropdownContent.style.opacity === '0') {
+                        dropdownContent.style.display = 'none';
+                    }
+                }, 200);
+            }
         }, 300); // 300ms delay before closing
     }
     
@@ -540,7 +549,11 @@
             history.pushState(null, null, window.location.pathname + window.location.search);
         }
         
-        const cards = document.querySelectorAll('#featured-models a[href*="index.html"]');
+        // Cache cards for better performance
+        const cards = filterByCategory.cachedCards || document.querySelectorAll('#featured-models a[href*="index.html"]');
+        if (!filterByCategory.cachedCards) {
+            filterByCategory.cachedCards = cards;
+        }
         
         cards.forEach(card => {
             const categoryText = card.querySelector('.text-sky-blue').textContent.toLowerCase();

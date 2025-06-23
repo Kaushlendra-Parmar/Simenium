@@ -13,7 +13,6 @@ window.SimeniumAssetManager = {
     // Initialize asset manager
     init: function() {
         this.setupPreloadDetection();
-        console.log('📦 Asset Manager initialized');
     },
     
     // Setup preload detection
@@ -31,7 +30,11 @@ window.SimeniumAssetManager = {
     // Handle resource loading errors
     handleResourceError: function(element) {
         const url = element.src || element.href;
-        console.warn(`⚠️ Failed to load resource: ${url}`);
+        
+        // Only warn in debug mode to avoid console noise
+        if (window.location.search.includes('debug=true')) {
+            console.warn(`⚠️ Failed to load resource: ${url}`);
+        }
         
         if (window.SimeniumErrorHandler) {
             window.SimeniumErrorHandler.handleError(
@@ -55,13 +58,15 @@ window.SimeniumAssetManager = {
             // Cache result
             this.validationCache.set(url, isValid);
             
-            if (!isValid) {
+            if (!isValid && window.location.search.includes('debug=true')) {
                 console.warn(`⚠️ Asset validation failed: ${url} (${response.status})`);
             }
             
             return isValid;
         } catch (error) {
-            console.error(`❌ Asset validation error for ${url}:`, error);
+            if (window.location.search.includes('debug=true')) {
+                console.error(`❌ Asset validation error for ${url}:`, error);
+            }
             this.validationCache.set(url, false);
             return false;
         }
