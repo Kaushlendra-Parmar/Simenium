@@ -687,21 +687,40 @@
     document.getElementById('currentYear').textContent = new Date().getFullYear();
     </script>
 
-    <!-- Error Handler and Utilities -->
+    <!-- Essential Error Handler -->
     <script src="./js/error-handler.js"></script>
-    <script src="./js/performance-monitor.js"></script>
+    
+    <!-- Load performance monitoring only when needed -->
+    <script>
+        if (window.location.search.includes('monitor=true') || window.location.search.includes('debug=true')) {
+            const perfScript = document.createElement('script');
+            perfScript.src = './js/performance-monitor.js';
+            document.head.appendChild(perfScript);
+        }
+    </script>
+    
+    <!-- Core functionality -->
+    <script src="./js/compatibility-checker.js"></script>
+    <script src="./js/mobile-optimizer.js"></script>
     <script src="./js/canvas-validator.js"></script>
     <script src="./js/memory-manager.js"></script>
-    <script src="./js/mobile-optimizer.js"></script>
     <script src="./js/model-fallback.js"></script>
     <script src="./js/threejs-config.js"></script>
     <script src="./js/path-resolver.js"></script>
-    <script src="./js/compatibility-checker.js"></script>
     <script src="./js/loading-manager.js"></script>
     <script src="./js/asset-manager.js"></script>
-    <script src="./js/system-tester.js"></script>
-    <script src="./js/deployment-validator.js"></script>
-    <script src="./js/es6-test.js"></script>
+    
+    <!-- Load development tools only when needed -->
+    <script>
+        if (window.location.search.includes('debug=true') || window.location.search.includes('test=true')) {
+            const devScripts = ['./js/system-tester.js', './js/deployment-validator.js', './js/es6-test.js'];
+            devScripts.forEach(src => {
+                const script = document.createElement('script');
+                script.src = src;
+                document.head.appendChild(script);
+            });
+        }
+    </script>
 
 </body>
 </html>

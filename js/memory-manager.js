@@ -161,9 +161,11 @@ window.SimeniumMemoryManager = {
 // Initialize auto cleanup
 SimeniumMemoryManager.setupAutoCleanup();
 
-// Monitor memory every 30 seconds
-setInterval(() => {
-    SimeniumMemoryManager.monitorMemory();
-}, 30000);
+// Monitor memory every 60 seconds, only if monitoring is enabled
+if (window.location.search.includes('monitor=true')) {
+    setInterval(() => {
+        SimeniumMemoryManager.monitorMemory();
+    }, 60000); // Reduced frequency
+}
 
 console.log('🧹 Memory Manager initialized');

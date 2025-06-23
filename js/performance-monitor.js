@@ -61,7 +61,7 @@ window.SimeniumPerformanceMonitor = {
     
     // Track memory usage
     trackMemoryUsage: function() {
-        if (performance.memory) {
+        if (performance.memory && window.location.search.includes('monitor=true')) {
             setInterval(() => {
                 const memory = {
                     timestamp: Date.now(),
