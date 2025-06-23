@@ -445,9 +445,6 @@ class SmartModelPreloader {
         while (this.preloadQueue.length > 0 && this.isPreloading && !this.userNavigatedAway && this.isOnHomepage) {
             const modelItem = this.preloadQueue.shift();
             await this.preloadModel(modelItem);
-            
-            // Process model without delay for optimal performance
-            await this.preloadModel(modelItem);
         }
         
         console.log('[Preloader] Preloading complete');

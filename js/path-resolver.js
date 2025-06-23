@@ -74,8 +74,8 @@ window.SimeniumPathResolver = {
                     return this.handleFetchFailure(url, error);
                 }
                 
-                // Wait before retry (exponential backoff)
-                await new Promise(resolve => setTimeout(resolve, Math.pow(2, attempt) * 1000));
+                // Wait before retry (minimal delay for performance)
+                await new Promise(resolve => setTimeout(resolve, Math.min(100 * attempt, 500)));
             }
         }
     },

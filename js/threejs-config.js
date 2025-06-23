@@ -99,7 +99,8 @@ function preloadScript(src) {
         script.as = 'script';
         document.head.appendChild(script);
         
-        setTimeout(resolve, 100); // Don't wait too long
+        // Resolve immediately - don't wait
+        resolve();
     });
 }
 

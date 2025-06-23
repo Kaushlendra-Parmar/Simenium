@@ -40,8 +40,8 @@ class ViewerPreloader {
                     console.warn('[ViewerPreloader] Smart preloader not available after 5 seconds');
                     resolve(); // Continue without smart preloader
                 } else {
-                    // Check immediately for better performance
-                    checkPreloader();
+                    // Use setTimeout to prevent main thread blocking
+                    setTimeout(checkPreloader, 100);
                 }
             };
             checkPreloader();
