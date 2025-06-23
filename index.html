@@ -460,7 +460,7 @@
 
     // Make Home link scroll to top and reset URL
     document.addEventListener('DOMContentLoaded', function() {
-      var homeLink = document.getElementById('home-link');
+      const homeLink = document.getElementById('home-link');
       if (homeLink) {
         homeLink.addEventListener('click', function(e) {
           e.preventDefault();
@@ -489,7 +489,7 @@
           } else {
             // Element doesn't exist, prevent default and show message
             e.preventDefault();
-            console.log(`Section "${targetId}" is not available yet.`);
+            // Section not available - message handled by UI
           }
         });
       });
