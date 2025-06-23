@@ -29,7 +29,6 @@ function loadScript(src, callback, errorCallback) {
     script.src = src;
     
     script.onload = function() {
-        console.log(`✅ Loaded: ${src}`);
         if (callback) callback();
     };
     
@@ -60,7 +59,6 @@ function loadThreeJSLibraries(callback) {
     }
     
     // Load in parallel for faster loading, then sequence for dependencies
-    console.log('📦 Fast-loading Three.js libraries...');
     
     // Preload scripts in parallel first
     const preloadPromises = [
@@ -71,7 +69,6 @@ function loadThreeJSLibraries(callback) {
     ];
     
     Promise.all(preloadPromises).then(() => {
-        console.log('📦 Scripts preloaded, loading in sequence...');
         
         // Now load in sequence to maintain dependencies
         loadScript(THREEJS_CONFIG.core, () => {

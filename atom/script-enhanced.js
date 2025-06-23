@@ -49,8 +49,6 @@ let penSettings = {
  */
 async function initializeApp() {
     try {
-        console.log('🧬 Initializing Enhanced Atom Viewer...');
-        
         // Show loading state
         SimeniumLoadingManager.show('canvas', {
             title: 'Loading Atom Viewer...',
@@ -95,11 +93,6 @@ async function initializeApp() {
             subtitle: 'Explore the atomic structure!',
             hideDelay: 1500
         });
-        
-        // Start performance monitoring
-        SimeniumPerformanceMonitor.startMonitoring();
-        
-        console.log('✅ Atom Viewer initialized successfully');
         
     } catch (error) {
         console.error('❌ Failed to initialize Atom Viewer:', error);

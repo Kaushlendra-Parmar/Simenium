@@ -26,7 +26,10 @@ window.SimeniumErrorHandler = {
             this.errors.shift();
         }
         
-        console.error('🚨 Simenium Error:', errorInfo);
+        // Only log to console in debug mode
+        if (window.location.search.includes('debug=true')) {
+            console.error('🚨 Simenium Error:', errorInfo);
+        }
         
         // Show user-friendly message for critical errors
         if (this.isCriticalError(error)) {

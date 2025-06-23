@@ -11,7 +11,6 @@ window.SimeniumLoadingManager = {
     // Initialize loading manager
     init: function() {
         this.createLoadingStyles();
-        console.log('⏳ Loading Manager initialized');
     },
     
     // Create loading styles
