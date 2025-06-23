@@ -340,13 +340,6 @@
                 this.style.opacity = '1';
             };
         });
-        
-        // Preload additional thumbnails for faster navigation
-        setTimeout(() => {
-            if (window.SimeniumAssetManager) {
-                window.SimeniumAssetManager.preloadHomepageThumbnails();
-            }
-        }, 1000);
     });
 
     // Make Home link scroll to top and reset URL
