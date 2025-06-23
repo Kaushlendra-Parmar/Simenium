@@ -35,6 +35,11 @@ let scene, camera, renderer, controls;
 let loadedModels = [];
 let modelLocations = {}; // Store locations for each model
 
+// Edit mode variables
+let editMode = false;
+let transformControls;
+let selectedObject = null;
+
 // Load model locations from JSON file
 async function loadModelLocations() {
     try {
