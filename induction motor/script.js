@@ -40,10 +40,16 @@ async function loadModelLocations() {
     try {
         console.log('Loading locations from:', CONFIG.locationsPath);
         // Use explicit relative path to ensure it loads from this subfolder's models directory
-        const response = await fetch(CONFIG.locationsPath);
+        const response = await fetch(CONFIG.locationsPath, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Cache-Control': 'no-cache'
+            }
+        });
         
         if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            throw new Error(`HTTP error! status: ${response.status} - ${response.statusText}`);
         }
         
         const text = await response.text();
