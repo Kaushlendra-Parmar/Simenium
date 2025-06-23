@@ -17,7 +17,13 @@ window.SimeniumCompatibilityChecker = {
             browser: this.getBrowserInfo()
         };
         
-        console.log('🌐 Browser compatibility:', compatibility);
+        console.log('🌐 Browser compatibility check results:', compatibility);
+        
+        // Add debug information for ES6
+        if (!compatibility.es6) {
+            console.warn('⚠️ ES6 features missing. Checking individual features:');
+            this.debugES6Support();
+        }
         
         // Check for critical issues
         const criticalIssues = this.findCriticalIssues(compatibility);
@@ -26,6 +32,28 @@ window.SimeniumCompatibilityChecker = {
         }
         
         return compatibility;
+    },
+    
+    // Debug ES6 support in detail
+    debugES6Support: function() {
+        const features = {
+            'Arrow Functions': (() => { try { const test = () => true; return test(); } catch(e) { return false; } })(),
+            'Template Literals': (() => { try { const test = `template`; return test === 'template'; } catch(e) { return false; } })(),
+            'Const/Let': (() => { try { const test = 'const'; let test2 = 'let'; return true; } catch(e) { return false; } })(),
+            'Promises': typeof Promise !== 'undefined',
+            'Map': typeof Map !== 'undefined',
+            'Set': typeof Set !== 'undefined',
+            'Destructuring': (() => { try { const [a] = [1]; const {b} = {b: 2}; return true; } catch(e) { return false; } })(),
+            'Default Parameters': (() => { try { const test = (a = 1) => a; return test() === 1; } catch(e) { return false; } })(),
+            'Spread Operator': (() => { try { const arr = [1, 2]; const test = [...arr]; return test.length === 2; } catch(e) { return false; } })()
+        };
+        
+        console.table(features);
+        
+        const missingFeatures = Object.entries(features).filter(([name, supported]) => !supported);
+        if (missingFeatures.length > 0) {
+            console.warn('❌ Missing ES6 features:', missingFeatures.map(([name]) => name));
+        }
     },
     
     // Check WebGL support
@@ -53,9 +81,42 @@ window.SimeniumCompatibilityChecker = {
     // Check ES6 support
     checkES6: function() {
         try {
-            // Test arrow functions, const/let, template literals
-            eval('const test = () => `ES6 ${true}`;');
-            return true;
+            // Test for ES6 features without using eval()
+            // Check for arrow functions support
+            const testArrow = () => true;
+            
+            // Check for template literals support
+            const testTemplate = `template literal support`;
+            
+            // Check for const/let support (they should be available if we got this far)
+            const testConst = 'const support';
+            
+            // Check for Promise support (part of ES6)
+            const hasPromise = typeof Promise !== 'undefined';
+            
+            // Check for Map/Set support
+            const hasMap = typeof Map !== 'undefined';
+            const hasSet = typeof Set !== 'undefined';
+            
+            // Check for destructuring assignment (try/catch for safety)
+            let destructuringSupported = false;
+            try {
+                const [a, b] = [1, 2];
+                const {test} = {test: true};
+                destructuringSupported = true;
+            } catch (error) {
+                destructuringSupported = false;
+            }
+            
+            // Return true if all major ES6 features are supported
+            return testArrow() && 
+                   testTemplate.length > 0 && 
+                   testConst.length > 0 && 
+                   hasPromise && 
+                   hasMap && 
+                   hasSet && 
+                   destructuringSupported;
+                   
         } catch (error) {
             return false;
         }
@@ -123,7 +184,7 @@ window.SimeniumCompatibilityChecker = {
         }
         
         if (!compatibility.es6) {
-            issues.push('ES6 not supported - modern JavaScript features unavailable');
+            issues.push('ES6 not supported - modern JavaScript features unavailable (polyfills will be loaded automatically)');
         }
         
         if (!compatibility.fetch) {
@@ -213,6 +274,9 @@ window.SimeniumCompatibilityChecker = {
     
     // Apply browser-specific polyfills
     applyPolyfills: function() {
+        // Check ES6 support and load polyfills if needed
+        const compatibility = this.checkCompatibility();
+        
         // Fetch polyfill for older browsers
         if (!window.fetch) {
             console.log('🔧 Loading fetch polyfill...');
@@ -224,6 +288,30 @@ window.SimeniumCompatibilityChecker = {
             console.log('🔧 Loading Promise polyfill...');
             this.loadPromisePolyfill();
         }
+        
+        // ES6 polyfills for older browsers
+        if (!compatibility.es6) {
+            console.log('🔧 Loading ES6 polyfills...');
+            this.loadES6Polyfills();
+        }
+    },
+    
+    // Load ES6 polyfills
+    loadES6Polyfills: function() {
+        const script = document.createElement('script');
+        script.src = 'https://polyfill.io/v3/polyfill.min.js?features=es6,es2015,es2016,es2017';
+        script.onload = () => {
+            console.log('✅ ES6 polyfills loaded');
+            // Re-check compatibility after polyfills
+            setTimeout(() => {
+                const newCompatibility = this.checkCompatibility();
+                if (newCompatibility.es6) {
+                    console.log('✅ ES6 features now available via polyfills');
+                }
+            }, 100);
+        };
+        script.onerror = () => console.error('❌ Failed to load ES6 polyfills');
+        document.head.appendChild(script);
     },
     
     // Load fetch polyfill
