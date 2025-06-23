@@ -2,7 +2,6 @@ node_modules/
 .DS_Store
 *.log
 npm-debug.log*
-dist/output.css.map
 .vscode/
 .env
 .env.local

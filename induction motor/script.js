@@ -78,6 +78,32 @@ async function loadModelLocations() {
         console.error('Error loading locations.json:', error);
         console.error('Make sure the path is correct:', CONFIG.locationsPath);
         console.error('Current CONFIG.modelsPath:', CONFIG.modelsPath);
+        
+        // Fallback: Use hardcoded locations if JSON fails to load
+        console.warn('Using fallback hardcoded locations...');
+        modelLocations = {
+            'stator.glb': {
+                from: { x: 0, y: 0.515, z: 0.607 },
+                to: { x: 0, y: 0.515, z: 0.515 }
+            },
+            'rotar.glb': {
+                from: { x: 0.588, y: -3.58, z: 0.515 },
+                to: { x: 0, y: 0.515, z: 0.515 }
+            },
+            'torus1.glb': {
+                from: { x: 3.101, y: 0.381, z: 0.492 },
+                to: { x: 0.082, y: 0.381, z: 0.492 }
+            },
+            'torus2.glb': {
+                from: { x: -1.345, y: -1.449, z: 0.637 },
+                to: { x: 0.035, y: 0.552, z: 0.649 }
+            },
+            'torus3.glb': {
+                from: { x: -1.74, y: -0.53, z: 1.762 },
+                to: { x: -0.171, y: 0.493, z: 0.627 }
+            }
+        };
+        console.log('Fallback model locations loaded:', modelLocations);
     }
 }
 
