@@ -1,0 +1,392 @@
+/* Compact settings popup layout */
+.settings-popup-compact {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 18px;
+  min-width: 260px;
+}
+.settings-tools-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  min-width: 60px;
+}
+.settings-options-col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+.settings-options-col .settings-label {
+  margin-bottom: 2px;
+  font-size: 13px;
+  color: #ccc;
+  font-weight: 500;
+}
+.settings-options-col .settings-colors {
+  display: flex;
+  flex-direction: row;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+.settings-options-col .settings-widths {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+}
+.settings-tool-label {
+  font-size: 12px;
+  color: #ccc;
+  margin-top: 2px;
+  font-weight: 500;
+  text-align: center;
+  user-select: none;
+}
+/* Tool label below icon in settings */
+.settings-tool-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 48px;
+}
+.settings-tool-label {
+  font-size: 13px;
+  color: #ccc;
+  margin-top: 2px;
+  font-weight: 500;
+  text-align: center;
+  user-select: none;
+}
+/* Circular highlight for selected width option */
+.settings-width-btn.selected {
+  border: 2.5px solid #2196F3 !important;
+  background: #1e3a5f !important;
+  box-shadow: 0 0 8px 0 rgba(33,150,243,0.3) !important;
+  border-radius: 50% !important;
+  z-index: 1;
+}
+.width-dot {
+    border-radius: 50%;
+    display: block;
+    margin: 0 auto;
+    box-shadow: 0 0 0 2px #2196F3;
+    transition: box-shadow 0.18s;
+}
+.settings-width-btn.selected .width-dot {
+    box-shadow: 0 0 0 3px #2196F3, 0 0 0 6px rgba(33,150,243,0.2);
+}
+.settings-widths#settings-widths-eraser .width-dot {
+    box-shadow: 0 0 0 2px #888;
+}
+.settings-widths#settings-widths-eraser .settings-width-btn.selected .width-dot {
+    box-shadow: 0 0 0 3px #888, 0 0 0 6px rgba(136,136,136,0.2);
+}
+/* Settings Popup Styles */
+#settings-popup.settings-popup {
+    position: absolute;
+    right: 0;
+    bottom: 60px;
+    min-width: 0;
+    width: max-content;
+    max-width: 180px;
+    align-items: center;
+    text-align: center;
+    padding-left: 12px;
+    padding-right: 12px;
+    font-size: 70%;
+    background: #2a2a2a;
+    border-radius: 14px;
+    border: 2px solid #444;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.4);
+    padding: 14px 12px 10px 12px;
+    z-index: 110;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    animation: popupUp 0.22s cubic-bezier(.4,1.4,.6,1) both;
+}
+@keyframes popupUp {
+    from { opacity: 0; transform: translateY(40px) scale(0.95); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+.settings-section {
+    margin-bottom: 6px;
+    width: 100%;
+}
+.settings-label {
+    font-size: 13px;
+    color: #ccc;
+    margin-bottom: 3px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+}
+.settings-tools, .settings-colors, .settings-widths {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    align-items: center;
+    justify-content: center;
+}
+.settings-tool-btn, .settings-color-btn, .settings-width-btn {
+    border: 2px solid transparent;
+    background: #3a3a3a;
+    border-radius: 7px;
+    cursor: pointer;
+    padding: 4px;
+    transition: border 0.18s, background 0.18s;
+    outline: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.settings-tool-btn:hover, .settings-color-btn:hover, .settings-width-btn:hover {
+    background: #4a4a4a;
+    border: 2px solid #555;
+}
+
+.settings-tool-btn.selected, .settings-color-btn.selected, .settings-width-btn.selected {
+    border: 2px solid #2196F3;
+    background: #1e3a5f;
+    box-shadow: 0 2px 8px rgba(33,150,243,0.3);
+    z-index: 1;
+}
+.settings-color-btn {
+    width: 19px;
+    height: 19px;
+    border-radius: 50%;
+    padding: 0;
+}
+.settings-width-btn span {
+    display: block;
+    margin: 0 auto;
+}
+/* Floating Pen and Settings Buttons (Bottom Right) */
+#floating-tools {
+    position: fixed;
+    right: 32px;
+    bottom: 32px;
+    z-index: 30;
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+}
+.tool-btn {
+    width: 48px;
+    height: 48px;
+    background: #2a2a2a;
+    border: 2px solid #444;
+    border-radius: 50%;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: border 0.2s, box-shadow 0.2s, background 0.2s;
+    outline: none;
+    padding: 0;
+}
+.tool-btn:active, .tool-btn.selected {
+    border: 2px solid #2196F3;
+    background: #1e3a5f;
+    box-shadow: 0 2px 12px rgba(33,150,243,0.3);
+}
+.tool-btn svg {
+    display: block;
+}
+/* Highlight selected part button with accent color (same as toggle ON) */
+.part-btn.selected {
+    background: #2196F3;
+    color: #fff;
+    font-weight: normal;
+    box-shadow: 0 0 0 2px #2196F3, 0 2px 8px rgba(33,150,243,0.15);
+    outline: none;
+    border: 2px solid #2196F3;
+    z-index: 1;
+}
+/* Toggle Switch Styles */
+.switch-label {
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    margin-top: 20px;
+    gap: 10px;
+}
+.switch {
+    display: none;
+}
+.slider {
+    position: relative;
+    width: 40px;
+    height: 22px;
+    background: #333;
+    border-radius: 22px;
+    cursor: pointer;
+    transition: background 0.2s;
+    display: inline-block;
+}
+.slider:before {
+    content: "";
+    position: absolute;
+    left: 4px;
+    top: 4px;
+    width: 14px;
+    height: 14px;
+    background: #fff;
+    border-radius: 50%;
+    transition: transform 0.2s;
+}
+.switch:checked + .slider {
+    background: #2196F3;
+}
+.switch:checked + .slider:before {
+    transform: translateX(18px);
+}
+/* Model Move Arrow Controls */
+/* Model Move Arrow Controls */
+.zoom-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 1.8rem;
+    background: #2a2a2a;
+    color: #ccc;
+    border: 2px solid #444;
+    border-radius: 50%;
+    margin: 5px 0;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    transition: background 0.2s, border 0.2s, box-shadow 0.2s;
+}
+.zoom-btn:hover {
+    background: #3a3a3a;
+    border: 2px solid #555;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.4);
+}
+#zoom-controls {
+    position: fixed;
+    top: 30px;
+    right: 30px;
+    z-index: 20;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Home Button (Bottom Left) */
+#home-control {
+    position: fixed;
+    left: 32px;
+    bottom: 32px;
+    z-index: 20;
+    display: flex;
+    gap: 12px;
+}
+
+.home-btn {
+    width: 48px;
+    height: 48px;
+    background: #2a2a2a;
+    border: 2px solid #444;
+    border-radius: 50%;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: border 0.2s, box-shadow 0.2s, background 0.2s;
+    outline: none;
+    padding: 0;
+}
+
+.home-btn:hover {
+    border: 2px solid #555;
+    background: #3a3a3a;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.4);
+}
+
+.home-btn:active {
+    border: 2px solid #2196F3;
+    background: #1e3a5f;
+    box-shadow: 0 2px 12px rgba(33,150,243,0.3);
+}
+
+.arrow-btn {
+    width: 48px;
+    height: 48px;
+    font-size: 2rem;
+    background: #222;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    margin: 0 2px;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    transition: background 0.2s;
+}
+.arrow-btn:hover {
+    background: #444;
+}
+body {
+    margin: 0;
+    overflow: hidden;
+}
+
+#canvas {
+    width: 100vw;
+    height: 100vh;
+    display: block;
+}
+
+#sidebar {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 15px;
+    border-radius: 5px;
+    font-family: Arial, sans-serif;
+}
+
+#sidebar h2 {
+    margin: 0 0 10px;
+    font-size: 18px;
+}
+
+#sidebar button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    background: #333;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+/* Ensure pen button toggle behavior works correctly */
+#pen-btn:focus {
+    outline: none;
+}
+
+#pen-btn.selected {
+    border: 2px solid #2196F3 !important;
+    background: #1e3a5f !important;
+    box-shadow: 0 2px 12px rgba(33,150,243,0.3) !important;
+}
+
+/* Prevent button from getting stuck in active state */
+.tool-btn:active:not(.selected) {
+    border: 2px solid #2196F3;
+    background: #1e3a5f;
+    box-shadow: 0 2px 12px rgba(33,150,243,0.3);
+}
+
+
+
+

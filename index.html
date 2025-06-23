@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simenium - Experience Learning Visually</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap" rel="stylesheet">
+    <style>
+        /* Custom Tailwind application */
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background-color: #F8FAFC; /* Cloud White */
+            color: #1E293B; /* Deep Blue Gray */
+        }
+        .text-deep-blue-gray { color: #1E293B; }
+        .bg-deep-blue-gray { background-color: #1E293B; }
+        .text-sky-blue { color: #38BDF8; }
+        .bg-sky-blue { background-color: #38BDF8; }
+        .bg-royal-blue { background-color: #3B82F6; }
+        .hover\:bg-royal-blue-dark:hover { background-color: #2563EB; } /* Slightly darker for hover */
+        .bg-cloud-white { background-color: #F8FAFC; }
+        .border-sky-blue { border-color: #38BDF8; }
+        .ring-sky-blue { --tw-ring-color: #38BDF8; }
+        
+        /* Lazy loading styles */
+        .lazy-image {
+            transition: opacity 0.3s ease-in-out;
+        }
+        .lazy-image.loaded {
+            opacity: 1 !important;
+        }
+        
+        /* Loading indicator for lazy images */
+        .image-placeholder {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f1f5f9;
+            color: #64748b;
+            font-size: 0.875rem;
+        }
+        .image-placeholder::before {
+            content: 'Loading...';
+        }
+        
+        /* Categories dropdown styles */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 200px;
+            box-shadow: 0 8px 32px 0 rgba(30,41,59,0.18);
+            border-radius: 8px;
+            z-index: 1000;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 8px 0;
+            margin-top: 4px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s ease, visibility 0.2s ease, transform 0.2s ease;
+        }
+        
+        .dropdown:hover .dropdown-content,
+        .dropdown-content:hover {
+            display: block;
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+        
+        /* Create a bridge between dropdown trigger and content */
+        .dropdown::before {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            height: 12px;
+            background: transparent;
+            z-index: 999;
+        }
+        
+        .dropdown-content a {
+            color: #1E293B;
+            padding: 10px 16px;
+            text-decoration: none;
+            display: block;
+            font-size: 14px;
+            transition: background-color 0.2s;
+        }
+        
+        .dropdown-content a:hover {
+            background-color: #F8FAFC;
+            color: #38BDF8;
+        }
+    </style>
+</head>
+<body>
+
+
+    <header class="bg-cloud-white shadow-xl sticky top-0 z-50" style="position: sticky; top: 0; z-index: 50; box-shadow: 0 8px 32px 0 rgba(30,41,59,0.18), 0 1.5px 6px 0 rgba(59,130,246,0.10);">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="text-3xl font-bold text-deep-blue-gray">
+                Simenium
+            </div>
+            <div class="flex items-center">
+                <a href="#" id="home-link" class="text-deep-blue-gray hover:text-sky-blue transition duration-300 mr-6">Home</a>
+                
+                <!-- Categories Dropdown -->
+                <div class="dropdown mr-6">
+                    <a href="#" class="text-deep-blue-gray hover:text-sky-blue transition duration-300">
+                        Categories
+                    </a>
+                    <div class="dropdown-content">
+                        <a href="#electrical-engineering" onclick="filterByCategory('electrical')">⚡ Electrical Engineering</a>
+                        <a href="#biology" onclick="filterByCategory('biology')">🧬 Biology</a>
+                        <a href="#chemistry" onclick="filterByCategory('chemistry')">🧪 Chemistry</a>
+                        <a href="#astronomy" onclick="filterByCategory('astronomy')">🌟 Astronomy</a>
+                        <a href="#environmental-science" onclick="filterByCategory('environmental')">🌍 Environmental Science</a>
+                        <a href="#all-categories" onclick="filterByCategory('all')">📚 All Categories</a>
+                    </div>
+                </div>
+                
+                <a href="#mission" class="text-deep-blue-gray hover:text-sky-blue transition duration-300 mr-6">About Us</a>
+                <a href="#contact" class="text-deep-blue-gray hover:text-sky-blue transition duration-300">Contact Us</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+      <!-- Gradient overlay directly below navbar, attached to page scroll -->
+      <div style="width: 100vw; height: 110px; pointer-events: none; z-index: 10; background: linear-gradient(to bottom, rgba(59,130,246,0.18) 0%, rgba(59,130,246,0.09) 40%, rgba(248,250,252,0.0) 100%);"></div>
+        <section id="hero" class="bg-cloud-white pt-1 pb-16 md:pt-0 md:pb-24 flex flex-col items-center justify-center text-center px-4" style="scroll-margin-top: 0;">
+            <div class="max-w-4xl mx-auto">
+                <h1 class="text-5xl sm:text-6xl md:text-7xl font-bold text-deep-blue-gray">
+                    Simenium
+                </h1>
+                <p class="mt-3 text-2xl sm:text-3xl md:text-4xl font-medium text-deep-blue-gray">
+                    Assuming?
+                    <span class="text-sky-400">Nahhh.</span>
+                    Feeling?
+                    <span class="text-sky-400">Yesss.</span>
+                </p>
+                <p class="mt-6 max-w-2xl mx-auto text-lg md:text-xl text-slate-600">
+                    Dive into interactive 3D models and transform your understanding of complex subjects.
+                </p>
+                <a href="#featured-models"
+                   class="mt-10 inline-block bg-royal-blue text-white font-semibold py-3 px-10 rounded-lg shadow-md hover:bg-royal-blue-dark transition-transform duration-300 ease-in-out transform hover:scale-105">
+                    Explore Models
+                </a>
+            </div>
+        </section>
+
+        <section id="featured-models" class="py-16 md:py-24 bg-cloud-white">
+            <div class="mx-auto px-4 max-w-5xl">
+                <h2 class="text-3xl md:text-4xl font-bold text-deep-blue-gray text-center mb-10 md:mb-14">
+                    Featured Models
+                </h2>                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-8 lg:gap-10">                    <!-- Active Card: Induction Motor -->
+                    <a href="induction motor/index.html" class="bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col transition-all duration-300 hover:shadow-2xl hover:scale-105 no-underline">
+                        <div class="w-full h-72 bg-slate-100 flex items-center justify-center">
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23f1f5f9'/%3E%3C/svg%3E" data-src="induction motor/thumbnail.png" alt="Three Phase Induction Motor Preview" class="lazy-image object-contain w-full h-full opacity-0 transition-opacity duration-300" />
+                        </div>
+                        <div class="p-4 flex-grow flex flex-col">
+                            <h3 class="text-lg font-semibold text-deep-blue-gray mb-1">Three Phase Induction Motor</h3>
+                            <p class="text-xs font-medium text-sky-blue mb-0.5">Electrical Engineering</p>
+                            <p class="text-xs text-slate-500 mb-3">Machines</p>
+                        </div>
+                    </a>                      <!-- Active Card: Insulators -->
+                    <a href="Insulators/index.html" class="bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col transition-all duration-300 hover:shadow-2xl hover:scale-105 no-underline">
+                        <div class="w-full h-72 bg-slate-100 flex items-center justify-center">
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23f1f5f9'/%3E%3C/svg%3E" data-src="Insulators/thumbnail.png" alt="Electrical Insulators Preview" class="lazy-image object-contain w-full h-full opacity-0 transition-opacity duration-300" />
+                        </div>
+                        <div class="p-4 flex-grow flex flex-col">
+                            <h3 class="text-lg font-semibold text-deep-blue-gray mb-1">Electrical Insulators</h3>
+                            <p class="text-xs font-medium text-sky-blue mb-0.5">Electrical Engineering</p>
+                            <p class="text-xs text-slate-500 mb-3">Power Systems</p>
+                        </div>
+                    </a>                      <!-- Active Card: Transformer -->
+                    <a href="transformer/index.html" class="bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col transition-all duration-300 hover:shadow-2xl hover:scale-105 no-underline">
+                        <div class="w-full h-72 bg-slate-100 flex items-center justify-center">
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23f1f5f9'/%3E%3C/svg%3E" data-src="transformer/thumbnail.png" alt="Electrical Transformer Preview" class="lazy-image object-contain w-full h-full opacity-0 transition-opacity duration-300" />                        </div>
+                        <div class="p-4 flex-grow flex flex-col">
+                            <h3 class="text-lg font-semibold text-deep-blue-gray mb-1">Electrical Transformer</h3>
+                            <p class="text-xs font-medium text-sky-blue mb-0.5">Electrical Engineering</p>
+                            <p class="text-xs text-slate-500 mb-3">Power Systems</p>
+                        </div>
+                    </a>                      <!-- Active Card: DC Motor -->
+                    <a href="dc motor/index.html" class="bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col transition-all duration-300 hover:shadow-2xl hover:scale-105 no-underline">
+                        <div class="w-full h-72 bg-slate-100 flex items-center justify-center">
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23f1f5f9'/%3E%3C/svg%3E" data-src="dc motor/thumbnail.png" alt="DC Motor Preview" class="lazy-image object-contain w-full h-full opacity-0 transition-opacity duration-300" />
+                        </div>
+                        <div class="p-4 flex-grow flex flex-col">
+                            <h3 class="text-lg font-semibold text-deep-blue-gray mb-1">DC Motor</h3>
+                            <p class="text-xs font-medium text-sky-blue mb-0.5">Electrical Engineering</p>
+                            <p class="text-xs text-slate-500 mb-3">Machines</p>                        </div>
+                    </a>
+                      <!-- Active Card: Galvanometer -->
+                    <a href="galvanometer/index.html" class="bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col transition-all duration-300 hover:shadow-2xl hover:scale-105 no-underline">
+                        <div class="w-full h-72 bg-slate-100 flex items-center justify-center">
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23f1f5f9'/%3E%3C/svg%3E" data-src="galvanometer/thumbnail.png" alt="Galvanometer Preview" class="lazy-image object-contain w-full h-full opacity-0 transition-opacity duration-300" />
+                        </div>
+                        <div class="p-4 flex-grow flex flex-col">
+                            <h3 class="text-lg font-semibold text-deep-blue-gray mb-1">Galvanometer</h3>
+                            <p class="text-xs font-medium text-sky-blue mb-0.5">Electrical Engineering</p>
+                            <p class="text-xs text-slate-500 mb-3">Instruments</p>
+                        </div>
+                    </a>                      <!-- Active Card: Multimeter -->
+                    <a href="multimeter/index.html" class="bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col transition-all duration-300 hover:shadow-2xl hover:scale-105 no-underline">
+                        <div class="w-full h-72 bg-slate-100 flex items-center justify-center">
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23f1f5f9'/%3E%3C/svg%3E" data-src="multimeter/thumbnail.png" alt="Multimeter Preview" class="lazy-image object-contain w-full h-full opacity-0 transition-opacity duration-300" />                        </div>
+                        <div class="p-4 flex-grow flex flex-col">
+                            <h3 class="text-lg font-semibold text-deep-blue-gray mb-1">Multimeter</h3>
+                            <p class="text-xs font-medium text-sky-blue mb-0.5">Electrical Engineering</p>
+                            <p class="text-xs text-slate-500 mb-3">Instruments</p>
+                        </div>
+                    </a>                      <!-- Active Card: Atom -->
+                    <a href="atom/index.html" class="bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col transition-all duration-300 hover:shadow-2xl hover:scale-105 no-underline">
+                        <div class="w-full h-72 bg-slate-100 flex items-center justify-center">
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23f1f5f9'/%3E%3C/svg%3E" data-src="atom/thumbnail.png" alt="Atom Preview" class="lazy-image object-contain w-full h-full opacity-0 transition-opacity duration-300" />
+                        </div>
+                        <div class="p-4 flex-grow flex flex-col">
+                            <h3 class="text-lg font-semibold text-deep-blue-gray mb-1">Atom Structure</h3>
+                            <p class="text-xs font-medium text-sky-blue mb-0.5">Chemistry</p>
+                            <p class="text-xs text-slate-500 mb-3">Atomic Structure</p>
+                        </div>
+                    </a>                      <!-- Active Card: Cells -->
+                    <a href="cells/index.html" class="bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col transition-all duration-300 hover:shadow-2xl hover:scale-105 no-underline">
+                        <div class="w-full h-72 bg-slate-100 flex items-center justify-center">
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23f1f5f9'/%3E%3C/svg%3E" data-src="cells/thumbnail.png" alt="Cells Preview" class="lazy-image object-contain w-full h-full opacity-0 transition-opacity duration-300" />
+                        </div>
+                        <div class="p-4 flex-grow flex flex-col">
+                            <h3 class="text-lg font-semibold text-deep-blue-gray mb-1">Cell Biology</h3>
+                            <p class="text-xs font-medium text-sky-blue mb-0.5">Biology</p>
+                            <p class="text-xs text-slate-500 mb-3">Cell Structure</p>
+                        </div>
+                    </a>                      <!-- Active Card: DNA & RNA -->
+                    <a href="dna & rna/index.html" class="bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col transition-all duration-300 hover:shadow-2xl hover:scale-105 no-underline">
+                        <div class="w-full h-72 bg-slate-100 flex items-center justify-center">
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23f1f5f9'/%3E%3C/svg%3E" data-src="dna & rna/thumbnail.png" alt="DNA & RNA Preview" class="lazy-image object-contain w-full h-full opacity-0 transition-opacity duration-300" />                        </div>
+                        <div class="p-4 flex-grow flex flex-col">
+                            <h3 class="text-lg font-semibold text-deep-blue-gray mb-1">DNA & RNA</h3>
+                            <p class="text-xs font-medium text-sky-blue mb-0.5">Biology</p>
+                            <p class="text-xs text-slate-500 mb-3">Genetics</p>
+                        </div>
+                    </a>                      <!-- Active Card: Digestive System -->
+                    <a href="digestive system/index.html" class="bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col transition-all duration-300 hover:shadow-2xl hover:scale-105 no-underline">
+                        <div class="w-full h-72 bg-slate-100 flex items-center justify-center">
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23f1f5f9'/%3E%3C/svg%3E" data-src="digestive system/thumbnail.png" alt="Digestive System Preview" class="lazy-image object-contain w-full h-full opacity-0 transition-opacity duration-300" />
+                        </div>
+                        <div class="p-4 flex-grow flex flex-col">
+                            <h3 class="text-lg font-semibold text-deep-blue-gray mb-1">Digestive System</h3>
+                            <p class="text-xs font-medium text-sky-blue mb-0.5">Biology</p>
+                            <p class="text-xs text-slate-500 mb-3">Human Anatomy</p>
+                        </div>
+                    </a>                      <!-- Active Card: Neuron -->
+                    <a href="neuron/index.html" class="bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col transition-all duration-300 hover:shadow-2xl hover:scale-105 no-underline">
+                        <div class="w-full h-72 bg-slate-100 flex items-center justify-center">
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23f1f5f9'/%3E%3C/svg%3E" data-src="neuron/thumbnail.png" alt="Neuron Preview" class="lazy-image object-contain w-full h-full opacity-0 transition-opacity duration-300" />
+                        </div>
+                        <div class="p-4 flex-grow flex flex-col">
+                            <h3 class="text-lg font-semibold text-deep-blue-gray mb-1">Neuron</h3>
+                            <p class="text-xs font-medium text-sky-blue mb-0.5">Biology</p>
+                            <p class="text-xs text-slate-500 mb-3">Nervous System</p>
+                        </div>
+                    </a>                      <!-- Active Card: Solar System -->
+                    <a href="solar system/index.html" class="bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col transition-all duration-300 hover:shadow-2xl hover:scale-105 no-underline">
+                        <div class="w-full h-72 bg-slate-100 flex items-center justify-center">
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23f1f5f9'/%3E%3C/svg%3E" data-src="solar system/thumbnail.png" alt="Solar System Preview" class="lazy-image object-contain w-full h-full opacity-0 transition-opacity duration-300" />                        </div>
+                        <div class="p-4 flex-grow flex flex-col">
+                            <h3 class="text-lg font-semibold text-deep-blue-gray mb-1">Solar System</h3>
+                            <p class="text-xs font-medium text-sky-blue mb-0.5">Astronomy</p>
+                            <p class="text-xs text-slate-500 mb-3">Space Science</p>
+                        </div>
+                    </a>                      <!-- Active Card: Water Cycle -->
+                    <a href="water cycle/index.html" class="bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col transition-all duration-300 hover:shadow-2xl hover:scale-105 no-underline">
+                        <div class="w-full h-72 bg-slate-100 flex items-center justify-center">
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23f1f5f9'/%3E%3C/svg%3E" data-src="water cycle/thumbnail.png" alt="Water Cycle Preview" class="lazy-image object-contain w-full h-full opacity-0 transition-opacity duration-300" />
+                        </div>
+                        <div class="p-4 flex-grow flex flex-col">
+                            <h3 class="text-lg font-semibold text-deep-blue-gray mb-1">Water Cycle</h3>
+                            <p class="text-xs font-medium text-sky-blue mb-0.5">Environmental Science</p>
+                            <p class="text-xs text-slate-500 mb-3">Earth Science</p>
+                        </div>
+                    </a>
+                    
+                    <!-- Coming Soon Card -->
+                    <div class="bg-slate-50 border-2 border-dashed border-slate-300 rounded-2xl w-full overflow-hidden flex flex-col transition-all duration-300">
+                        <div class="w-full h-72 flex items-center justify-center">
+                            <svg class="w-10 h-10 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                        </div>
+                        <div class="p-4 flex-grow flex flex-col items-center justify-center text-center">
+                            <h3 class="text-base font-semibold text-deep-blue-gray mb-1">More Models Coming Soon</h3>
+                            <p class="text-xs text-slate-500">Stay tuned for an expanding library!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="mission" class="py-16 md:py-24 bg-white">
+            <div class="container mx-auto px-6 text-center max-w-3xl">
+                <h2 class="text-3xl md:text-4xl font-bold text-deep-blue-gray mb-6">Our Mission</h2>
+                <p class="text-lg md:text-xl text-slate-700 leading-relaxed">
+                    Simenium creates interactive 3D models for higher education to help students stop imagining and start experiencing complex subjects visually. We believe in the power of immersive learning to make education more engaging and effective.
+                </p>
+            </div>
+        </section>
+
+        <section id="contact" class="py-16 md:py-24 bg-slate-50">
+            <div class="container mx-auto px-6 max-w-2xl text-center">
+                <h2 class="text-3xl md:text-4xl font-bold text-deep-blue-gray mb-4">
+                    Want to request a model or support the project?
+                </h2>
+                <p class="text-lg md:text-xl text-slate-700 mb-8">
+                    Reach out to us. We'd love to hear from you!
+                </p>
+                <a href="mailto:contact@simenium.com"
+                   class="inline-block bg-royal-blue text-white text-xl font-medium py-4 px-10 rounded-lg shadow-md transition duration-200">
+                    contact@simenium.com
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-cloud-white border-t border-slate-200">
+        <div class="container mx-auto px-6 py-8 text-center text-slate-500">
+            <p>&copy; <span id="currentYear"></span> Simenium. All rights reserved.</p>
+            <p class="text-xs mt-1">Designed for a brighter learning future.</p>
+        </div>
+    </footer>    <script>    // Lazy loading implementation for homepage images with loading states
+    const lazyImages = document.querySelectorAll('.lazy-image');
+    
+    const imageObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const img = entry.target;
+                const src = img.getAttribute('data-src');
+                
+                if (src) {
+                    // Create a new image element to preload
+                    const preloader = new Image();
+                    preloader.onload = () => {
+                        img.src = src;
+                        img.style.opacity = '1';
+                        img.classList.add('loaded');
+                        // Stop the shimmer animation
+                        img.style.animation = 'none';
+                        img.style.background = 'none';
+                        img.style.backgroundSize = 'auto';
+                    };
+                    preloader.onerror = () => {
+                        // Fallback in case of loading error
+                        img.style.opacity = '0.5';
+                        img.style.animation = 'none';
+                        img.style.background = '#f1f5f9'; // Solid gray fallback
+                        console.warn('Failed to load image:', src);
+                    };
+                    preloader.src = src;
+                    
+                    img.removeAttribute('data-src');
+                    observer.unobserve(img);
+                }
+            }
+        });
+    }, {
+        root: null,
+        rootMargin: '50px',
+        threshold: 0.1
+    });
+    
+    lazyImages.forEach(img => {
+        imageObserver.observe(img);
+        // Add a subtle loading indicator
+        img.style.background = 'linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%)';
+        img.style.backgroundSize = '200% 100%';
+        img.style.animation = 'shimmer 1.5s infinite';
+    });
+    
+    // Add shimmer effect CSS
+    if (!document.getElementById('shimmer-style')) {
+        const style = document.createElement('style');
+        style.id = 'shimmer-style';
+        style.textContent = `
+            @keyframes shimmer {
+                0% { background-position: -200% 0; }
+                100% { background-position: 200% 0; }
+            }
+        `;
+        document.head.appendChild(style);
+    }
+
+    // Make Home link scroll to top
+    document.addEventListener('DOMContentLoaded', function() {
+      var homeLink = document.getElementById('home-link');
+      if (homeLink) {
+        homeLink.addEventListener('click', function(e) {
+          e.preventDefault();
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+      }
+    });
+    
+    // Category filtering functionality
+    let dropdownTimeout;
+    
+    function showDropdown() {
+        clearTimeout(dropdownTimeout);
+        const dropdown = document.querySelector('.dropdown-content');
+        dropdown.style.display = 'block';
+        setTimeout(() => {
+            dropdown.style.opacity = '1';
+            dropdown.style.visibility = 'visible';
+        }, 10);
+    }
+    
+    function hideDropdown() {
+        dropdownTimeout = setTimeout(() => {
+            const dropdown = document.querySelector('.dropdown-content');
+            dropdown.style.opacity = '0';
+            dropdown.style.visibility = 'hidden';
+            setTimeout(() => {
+                if (dropdown.style.opacity === '0') {
+                    dropdown.style.display = 'none';
+                }
+            }, 200);
+        }, 300); // 300ms delay before closing
+    }
+    
+    // Enhanced dropdown behavior
+    document.addEventListener('DOMContentLoaded', function() {
+        const dropdownTrigger = document.querySelector('.dropdown > a');
+        const dropdownContent = document.querySelector('.dropdown-content');
+        
+        if (dropdownTrigger && dropdownContent) {
+            dropdownTrigger.addEventListener('mouseenter', showDropdown);
+            dropdownTrigger.addEventListener('mouseleave', hideDropdown);
+            dropdownContent.addEventListener('mouseenter', showDropdown);
+            dropdownContent.addEventListener('mouseleave', hideDropdown);
+        }
+    });
+    
+    function filterByCategory(category) {
+        const cards = document.querySelectorAll('#featured-models a[href*="index.html"]');
+        
+        cards.forEach(card => {
+            const categoryText = card.querySelector('.text-sky-blue').textContent.toLowerCase();
+            let shouldShow = false;
+            
+            if (category === 'all') {
+                shouldShow = true;
+            } else if (category === 'electrical' && categoryText.includes('electrical')) {
+                shouldShow = true;
+            } else if (category === 'biology' && categoryText.includes('biology')) {
+                shouldShow = true;
+            } else if (category === 'chemistry' && categoryText.includes('chemistry')) {
+                shouldShow = true;
+            } else if (category === 'astronomy' && categoryText.includes('astronomy')) {
+                shouldShow = true;
+            } else if (category === 'environmental' && categoryText.includes('environmental')) {
+                shouldShow = true;
+            }
+            
+            if (shouldShow) {
+                card.style.display = 'flex';
+                card.style.opacity = '1';
+                card.style.transform = 'scale(1)';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+        
+        // Scroll to models section after filtering
+        document.getElementById('featured-models').scrollIntoView({ 
+            behavior: 'smooth',
+            block: 'start'
+        });
+        
+        // Update the section title to show active filter
+        const sectionTitle = document.querySelector('#featured-models h2');
+        const originalTitle = 'Featured Models';
+        
+        if (category === 'all') {
+            sectionTitle.textContent = originalTitle;
+        } else {
+            const categoryNames = {
+                'electrical': 'Electrical Engineering Models',
+                'biology': 'Biology Models', 
+                'chemistry': 'Chemistry Models',
+                'astronomy': 'Astronomy Models',
+                'environmental': 'Environmental Science Models'
+            };
+            sectionTitle.textContent = categoryNames[category] || originalTitle;
+        }
+    }
+    
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(event) {
+        const dropdown = document.querySelector('.dropdown');
+        if (dropdown && !dropdown.contains(event.target)) {
+            // Optional: Add logic if you want to close dropdown on outside click
+            // Currently using CSS hover, but this could be enhanced for mobile
+        }
+    });
+    
+    // Set current year in footer
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
+    </script>
+
+</body>
+</html>
