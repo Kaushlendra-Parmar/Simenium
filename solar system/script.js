@@ -192,6 +192,119 @@ function onWindowResize() {
     renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
+// Debug function to check scene integrity
+function debugSceneContents() {
+    console.log('=== Scene Debug Info ===');
+    console.log(`Total scene children: ${scene.children.length}`);
+    console.log(`Loaded models tracked: ${loadedModels.length}`);
+    console.log(`Animation mixer active: ${mixer !== null}`);
+    console.log(`Animation actions: ${animationActions.length}`);
+    console.log(`Is playing: ${isPlaying}`);
+    
+    // Count different object types
+    const objectCounts = {};
+    scene.traverse((child) => {
+        const type = child.constructor.name;
+        objectCounts[type] = (objectCounts[type] || 0) + 1;
+    });
+    
+    console.log('Object types in scene:', objectCounts);
+    
+    // Check for potential model duplicates
+    const modelObjects = [];
+    scene.traverse((child) => {
+        if (child.name && child.name.includes('.glb') && child.parent === scene) {
+            modelObjects.push(child.name);
+        }
+    });
+    
+    if (modelObjects.length > 1) {
+        console.warn('⚠️ Potential model duplication detected:', modelObjects);
+    } else {
+        console.log('✅ No model duplication detected');
+    }
+    
+    console.log('========================');
+}
+
+// =============================================================================
+// SCENE CLEANUP UTILITIES
+// =============================================================================
+
+// Clear all models from scene completely
+function clearAllModels() {
+    console.log(`Clearing scene with ${scene.children.length} objects`);
+    
+    // Stop and clear animations
+    if (mixer) {
+        mixer.stopAllAction();
+        if (mixer._actions) {
+            mixer._actions.forEach(action => {
+                if (action._clip) {
+                    mixer.uncacheClip(action._clip);
+                }
+            });
+        }
+        mixer = null;
+    }
+    animationActions = [];
+    isPlaying = false;
+    
+    // Remove all loaded models
+    loadedModels.forEach(model => {
+        // Remove from scene
+        scene.remove(model);
+        // Dispose of any geometries and materials to prevent memory leaks
+        model.traverse((child) => {
+            if (child.geometry) {
+                child.geometry.dispose();
+            }
+            if (child.material) {
+                if (Array.isArray(child.material)) {
+                    child.material.forEach(material => material.dispose());
+                } else {
+                    child.material.dispose();
+                }
+            }
+        });
+    });
+    loadedModels = [];
+    
+    // Force cleanup of any remaining model objects (more selective)
+    const objectsToRemove = [];
+    scene.traverse((child) => {
+        // Keep lights, camera, and other essential objects
+        // Only remove objects that look like loaded models
+        if (child !== scene && 
+            !child.isLight && 
+            !child.isCamera && 
+            !child.isDirectionalLight &&
+            !child.isAmbientLight &&
+            !child.isPointLight &&
+            !child.isRectAreaLight &&
+            child.parent === scene &&
+            (child.type === 'Group' || child.type === 'Object3D' || child.isMesh) &&
+            child.name && 
+            (child.name.includes('.glb') || child.name.includes('Scene'))) {
+            objectsToRemove.push(child);
+        }
+    });
+    
+    objectsToRemove.forEach(obj => {
+        scene.remove(obj);
+        if (obj.geometry) obj.geometry.dispose();
+        if (obj.material) {
+            if (Array.isArray(obj.material)) {
+                obj.material.forEach(material => material.dispose());
+            } else {
+                obj.material.dispose();
+            }
+        }
+    });
+    
+    console.log(`Scene cleaned, now has ${scene.children.length} objects`);
+}
+
 // =============================================================================
 // MODEL MANAGEMENT
 // =============================================================================
@@ -265,17 +378,10 @@ function loadModel(modelName) {
     const loader = new THREE.GLTFLoader();
     const modelPath = `${CONFIG.modelsPath}/${modelName}`;    console.log(`Loading model: ${modelPath}`);
 
-    // Reset animation state
-    if (mixer) {
-        mixer.stopAllAction();
-        mixer = null;
-    }
-    animationActions = [];
-    isPlaying = false;
-
-    // Clear existing models
-    loadedModels.forEach(model => scene.remove(model));
-    loadedModels = [];    loader.load(
+    // Use comprehensive scene cleanup
+    clearAllModels();
+    
+    loader.load(
         modelPath,
         (gltf) => {
             const model = gltf.scene;
@@ -355,6 +461,7 @@ function loadModel(modelName) {
             }
 
             console.log(`Model ${modelName} loaded successfully`);
+            debugSceneContents(); // Debug after model load
         },
         (progress) => {
             console.log('Loading progress:', (progress.loaded / progress.total * 100) + '% loaded');
@@ -372,6 +479,9 @@ function loadModel(modelName) {
 // Play animation
 function playAnimation() {
     if (mixer && animationActions.length > 0) {
+        console.log('Starting animation...');
+        debugSceneContents(); // Debug before animation
+        
         animationActions.forEach(action => {
             if (!action.isRunning()) {
                 action.reset();
@@ -382,6 +492,11 @@ function playAnimation() {
         isPlaying = true;
         updateAnimationControls();
         console.log('Animation started');
+        
+        // Debug after animation start
+        setTimeout(() => {
+            debugSceneContents();
+        }, 100);
     }
 }
 
@@ -801,6 +916,14 @@ function setupUIHandlers() {
     
     // Add window resize handler for pen canvas
     window.addEventListener('resize', resizePenCanvas);
+
+    // Add keyboard shortcut for debugging (Ctrl+D)
+    document.addEventListener('keydown', (e) => {
+        if (e.ctrlKey && e.key === 'd') {
+            e.preventDefault();
+            debugSceneContents();
+        }
+    });
 }
 
 // =============================================================================
@@ -810,9 +933,9 @@ function setupUIHandlers() {
 function animate() {
     requestAnimationFrame(animate);
     
-    // Update animation mixer
+    // Update animation mixer with safety checks
     const delta = clock.getDelta();
-    if (mixer) {
+    if (mixer && mixer._actions && mixer._actions.length > 0) {
         mixer.update(delta);
     }
     
@@ -844,5 +967,6 @@ document.addEventListener('DOMContentLoaded', () => {
     animate();
     
     console.log('3D Insulators Viewer initialized successfully');
+    console.log('Press Ctrl+D to debug scene contents');
 });
 
