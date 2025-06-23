@@ -154,12 +154,67 @@ body {
 
 /* Responsive design */
 @media (max-width: 768px) {
+    /* Prevent horizontal scrolling */
+    html, body {
+        overflow-x: hidden;
+        max-width: 100vw;
+    }
+    
+    /* Mobile navigation styles */
+    .mobile-dropdown button svg.rotate-180 {
+        transform: rotate(180deg);
+    }
+    
+    /* Ensure container doesn't overflow */
+    .container {
+        max-width: 100%;
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+    
+    /* Mobile-friendly grid spacing */
+    .grid {
+        gap: 1rem;
+    }
+    
+    /* Adjust hero section text sizes for mobile */
+    .text-5xl {
+        font-size: 2.5rem !important;
+        line-height: 1.1 !important;
+    }
+    
+    .text-2xl {
+        font-size: 1.25rem !important;
+        line-height: 1.75rem !important;
+    }
+    
+    /* Mobile card adjustments */
+    .model-card {
+        margin-bottom: 1rem;
+        max-width: 100%;
+    }
+    
+    /* Search container mobile adjustments */
     .search-container {
         max-width: 100%;
     }
     
-    .model-card {
-        margin-bottom: 1rem;
+    /* Mobile-specific dropdown content */
+    .dropdown-content {
+        position: static;
+        display: block;
+        box-shadow: none;
+        background-color: transparent;
+        transform: none;
+        opacity: 1;
+        visibility: visible;
+        min-width: auto;
+        padding: 0;
+        margin: 0;
+    }
+    
+    .dropdown:hover .dropdown-content {
+        display: block;
     }
 }
 
