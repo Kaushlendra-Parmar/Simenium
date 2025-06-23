@@ -192,8 +192,10 @@ function onWindowResize() {
     renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
-// Debug function to check scene integrity
+// Debug function to check scene integrity (only in debug mode)
 function debugSceneContents() {
+    if (!window.location.search.includes('debug=true')) return;
+    
     console.log('=== Scene Debug Info ===');
     console.log(`Total scene children: ${scene.children.length}`);
     console.log(`Loaded models tracked: ${loadedModels.length}`);
@@ -233,7 +235,9 @@ function debugSceneContents() {
 
 // Clear all models from scene completely
 function clearAllModels() {
-    console.log(`Clearing scene with ${scene.children.length} objects`);
+    if (window.location.search.includes('debug=true')) {
+        console.log(`Clearing scene with ${scene.children.length} objects`);
+    }
     
     // Stop and clear animations
     if (mixer) {
@@ -318,7 +322,9 @@ function clearAllModels() {
         }
     });
     
-    console.log(`Scene cleaned, now has ${scene.children.length} objects`);
+    if (window.location.search.includes('debug=true')) {
+        console.log(`Scene cleaned, now has ${scene.children.length} objects`);
+    }
     
     // Force renderer to clear its internal cache
     if (renderer) {
@@ -393,7 +399,11 @@ function setupModelButtons() {
 // Load and display a 3D model
 function loadModel(modelName) {
     const loader = new THREE.GLTFLoader();
-    const modelPath = `${CONFIG.modelsPath}/${modelName}`;    console.log(`Loading model: ${modelPath}`);
+    const modelPath = `${CONFIG.modelsPath}/${modelName}`;
+    
+    if (window.location.search.includes('debug=true')) {
+        console.log(`Loading model: ${modelPath}`);
+    }
 
     // Use comprehensive scene cleanup
     clearAllModels();
@@ -452,16 +462,22 @@ function loadModel(modelName) {
             model.position.sub(center);            
             
             // Ensure this is the only model in the scene before adding
-            console.log(`About to add model. Scene currently has ${scene.children.length} objects`);
+            if (window.location.search.includes('debug=true')) {
+                console.log(`About to add model. Scene currently has ${scene.children.length} objects`);
+            }
             
             scene.add(model);
             loadedModels.push(model);
             
-            console.log(`Model added. Scene now has ${scene.children.length} objects`);
+            if (window.location.search.includes('debug=true')) {
+                console.log(`Model added. Scene now has ${scene.children.length} objects`);
+            }
 
             // Setup animations if available
             if (gltf.animations && gltf.animations.length > 0) {
-                console.log(`Setting up animations for model...`);
+                if (window.location.search.includes('debug=true')) {
+                    console.log(`Setting up animations for model...`);
+                }
                 
                 // Stop any existing mixer before creating new one
                 if (mixer) {
@@ -483,8 +499,10 @@ function loadModel(modelName) {
                     action.enabled = true;
                 });
                 
-                console.log(`Found ${gltf.animations.length} animation(s) in the model`);
-                console.log(`Scene after animation setup has ${scene.children.length} objects`);
+                if (window.location.search.includes('debug=true')) {
+                    console.log(`Found ${gltf.animations.length} animation(s) in the model`);
+                    console.log(`Scene after animation setup has ${scene.children.length} objects`);
+                }
                 
                 // Show animation controls
                 updateAnimationControls();
@@ -527,11 +545,15 @@ function loadModel(modelName) {
 // Play animation
 function playAnimation() {
     if (mixer && animationActions.length > 0) {
-        console.log('Starting animation...');
+        if (window.location.search.includes('debug=true')) {
+            console.log('Starting animation...');
+        }
         
         // Ensure we have exactly one model before starting animation
         if (loadedModels.length > 1) {
-            console.warn('Multiple models detected, cleaning up duplicates...');
+            if (window.location.search.includes('debug=true')) {
+                console.warn('Multiple models detected, cleaning up duplicates...');
+            }
             // Keep only the last loaded model (most recent)
             const modelToKeep = loadedModels[loadedModels.length - 1];
             
@@ -571,7 +593,10 @@ function playAnimation() {
         
         isPlaying = true;
         updateAnimationControls();
-        console.log('Animation started with single model');
+        
+        if (window.location.search.includes('debug=true')) {
+            console.log('Animation started with single model');
+        }
     }
 }
 
@@ -583,7 +608,10 @@ function pauseAnimation() {
         });
         isPlaying = false;
         updateAnimationControls();
-        console.log('Animation paused');
+        
+        if (window.location.search.includes('debug=true')) {
+            console.log('Animation paused');
+        }
     }
 }
 
@@ -592,7 +620,9 @@ function resumeAnimation() {
     if (mixer && animationActions.length > 0) {
         // Ensure no duplicate models when resuming
         if (loadedModels.length > 1) {
-            console.warn('Multiple models detected during resume, cleaning up...');
+            if (window.location.search.includes('debug=true')) {
+                console.warn('Multiple models detected during resume, cleaning up...');
+            }
             const modelToKeep = loadedModels[loadedModels.length - 1];
             
             for (let i = 0; i < loadedModels.length - 1; i++) {
@@ -617,7 +647,10 @@ function resumeAnimation() {
         });
         isPlaying = true;
         updateAnimationControls();
-        console.log('Animation resumed');
+        
+        if (window.location.search.includes('debug=true')) {
+            console.log('Animation resumed');
+        }
     }
 }
 
@@ -975,7 +1008,9 @@ function animate() {
     
     // Safety check: Remove duplicate models if they appear during animation
     if (loadedModels.length > 1) {
-        console.warn('Duplicate models detected in animation loop, cleaning up...');
+        if (window.location.search.includes('debug=true')) {
+            console.warn('Duplicate models detected in animation loop, cleaning up...');
+        }
         const modelToKeep = loadedModels[loadedModels.length - 1];
         
         for (let i = 0; i < loadedModels.length - 1; i++) {
@@ -1028,6 +1063,10 @@ document.addEventListener('DOMContentLoaded', () => {
     animate();
     
     console.log('3D Insulators Viewer initialized successfully');
-    console.log('Press Ctrl+D to debug scene contents');
+    
+    // Debug shortcut (only in debug mode)
+    if (window.location.search.includes('debug=true')) {
+        console.log('Press Ctrl+D to debug scene contents');
+    }
 });
 

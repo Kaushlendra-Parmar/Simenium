@@ -152,16 +152,14 @@ function setupModelButtons() {
         btn.textContent = modelInfo.displayName;
         partsButtons.appendChild(btn);
     });
-      // Load first model by default with lazy loading
+      // Load first model immediately for best performance
     if (MODELS.length > 0) {
         // Mark first button as selected
         const firstBtn = partsButtons.querySelector('.part-btn');
         if (firstBtn) firstBtn.classList.add('selected');
         
-        // Implement lazy loading - defer model loading
-        setTimeout(() => {
-            loadModel(MODELS[0].name);
-        }, 100); // Small delay to allow UI to render first
+        // Load model immediately for optimal performance
+        loadModel(MODELS[0].name);
     }
     
     // Attach event listeners for buttons
@@ -230,7 +228,10 @@ function loadModel(modelName) {
             scene.add(model);
             loadedModels.push(model);
 
-            console.log(`Model ${modelName} loaded successfully`);
+            // Only log in debug mode for better performance
+            if (window.location.search.includes('debug=true')) {
+                console.log(`Model ${modelName} loaded successfully`);
+            }
         },
         (progress) => {
             // Only log progress in debug mode to improve performance

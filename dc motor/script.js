@@ -261,16 +261,14 @@ function setupModelButtons() {
         btn.textContent = modelInfo.displayName;
         partsButtons.appendChild(btn);
     });
-      // Load first model by default with lazy loading
+      // Load first model immediately for best performance
     if (MODELS.length > 0) {
         // Mark first button as selected
         const firstBtn = partsButtons.querySelector('.part-btn');
         if (firstBtn) firstBtn.classList.add('selected');
         
-        // Implement lazy loading - defer model loading
-        setTimeout(() => {
-            loadModel(MODELS[0].name);
-        }, 100); // Small delay to allow UI to render first
+        // Load model immediately for optimal performance
+        loadModel(MODELS[0].name);
     }
     
     // Attach event listeners for buttons
@@ -384,7 +382,9 @@ function loadModel(modelName) {
                     action.setLoop(THREE.LoopRepeat);
                 });
                 
-                console.log(`Found ${gltf.animations.length} animation(s) in the model`);
+                if (window.location.search.includes('debug=true')) {
+                    console.log(`Found ${gltf.animations.length} animation(s) in the model`);
+                }
                 
                 // Show animation controls
                 updateAnimationControls();
@@ -452,7 +452,10 @@ function playAnimation() {
         });
         isPlaying = true;
         updateAnimationControls();
-        console.log('Animation started');
+        
+        if (window.location.search.includes('debug=true')) {
+            console.log('Animation started');
+        }
     }
 }
 
@@ -464,7 +467,10 @@ function pauseAnimation() {
         });
         isPlaying = false;
         updateAnimationControls();
-        console.log('Animation paused');
+        
+        if (window.location.search.includes('debug=true')) {
+            console.log('Animation paused');
+        }
     }
 }
 
@@ -476,7 +482,10 @@ function resumeAnimation() {
         });
         isPlaying = true;
         updateAnimationControls();
-        console.log('Animation resumed');
+        
+        if (window.location.search.includes('debug=true')) {
+            console.log('Animation resumed');
+        }
     }
 }
 

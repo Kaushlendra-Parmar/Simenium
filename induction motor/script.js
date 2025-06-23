@@ -242,14 +242,12 @@ function setupModelButtons() {    // Get model list from the loaded locations.js
         windingBtn.textContent = 'winding';
         partsButtons.appendChild(windingBtn);
     }
-      // On first load, show all models at their 'to' positions (auto-connected from locations.json) with lazy loading
-    setTimeout(() => {
-        glbFiles.forEach((fileName) => {
-            const locations = modelLocations[fileName];
-            const to = locations ? locations.to : { x: 0, y: 0, z: 0 };
-            loadModel(fileName, { animateFrom: to });
-        });
-    }, 100); // Small delay to allow UI to render first
+      // Load all models immediately for optimal performance
+    glbFiles.forEach((fileName) => {
+        const locations = modelLocations[fileName];
+        const to = locations ? locations.to : { x: 0, y: 0, z: 0 };
+        loadModel(fileName, { animateFrom: to });
+    });
     
     // Attach event listeners for new buttons
     document.querySelectorAll('.part-btn').forEach(button => {
