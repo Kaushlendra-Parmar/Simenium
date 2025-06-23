@@ -4,8 +4,18 @@
  */
 
 window.SimeniumModelFallback = {
+    // Check if THREE.js is available
+    isThreeJSAvailable: function() {
+        return typeof THREE !== 'undefined';
+    },
+    
     // Create a simple fallback 3D object
     createFallbackModel: function(modelName) {
+        if (!this.isThreeJSAvailable()) {
+            console.warn('THREE.js not available, cannot create 3D fallback');
+            return null;
+        }
+        
         const group = new THREE.Group();
         group.name = `fallback-${modelName}`;
         
@@ -76,6 +86,12 @@ window.SimeniumModelFallback = {
     // Handle model loading failure
     handleModelLoadFailure: function(modelName, scene, loadedModels) {
         console.warn(`🔄 Creating fallback for failed model: ${modelName}`);
+        
+        // Check if THREE.js is available before creating 3D fallback
+        if (!this.isThreeJSAvailable()) {
+            this.showFallbackNotification(modelName);
+            return null;
+        }
         
         // Remove any partially loaded models
         loadedModels.forEach(model => scene.remove(model));
