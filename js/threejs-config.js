@@ -59,15 +59,51 @@ function loadThreeJSLibraries(callback) {
         checkComplete();
     }
     
-    // Load in sequence to avoid dependency issues
-    loadScript(THREEJS_CONFIG.core, () => {
-        loadScript(THREEJS_CONFIG.orbitControls, checkComplete, () => handleError('OrbitControls'));
-        loadScript(THREEJS_CONFIG.transformControls, checkComplete, () => handleError('TransformControls'));
-        loadScript(THREEJS_CONFIG.gltfLoader, checkComplete, () => handleError('GLTFLoader'));
-        loadScript(THREEJS_CONFIG.rectAreaLightUniformsLib, checkComplete, () => handleError('RectAreaLightUniformsLib'));
-        loadScript(THREEJS_CONFIG.rectAreaLightHelper, checkComplete, () => handleError('RectAreaLightHelper'));
-        loadScript(THREEJS_CONFIG.gsap, checkComplete, () => handleError('GSAP'));
-    }, () => handleError('Three.js Core'));
+    // Load in parallel for faster loading, then sequence for dependencies
+    console.log('📦 Fast-loading Three.js libraries...');
+    
+    // Preload scripts in parallel first
+    const preloadPromises = [
+        preloadScript(THREEJS_CONFIG.core),
+        preloadScript(THREEJS_CONFIG.orbitControls),
+        preloadScript(THREEJS_CONFIG.gltfLoader),
+        preloadScript(THREEJS_CONFIG.gsap)
+    ];
+    
+    Promise.all(preloadPromises).then(() => {
+        console.log('📦 Scripts preloaded, loading in sequence...');
+        
+        // Now load in sequence to maintain dependencies
+        loadScript(THREEJS_CONFIG.core, () => {
+            loadScript(THREEJS_CONFIG.orbitControls, checkComplete, () => handleError('OrbitControls'));
+            loadScript(THREEJS_CONFIG.transformControls, checkComplete, () => handleError('TransformControls'));
+            loadScript(THREEJS_CONFIG.gltfLoader, checkComplete, () => handleError('GLTFLoader'));
+            loadScript(THREEJS_CONFIG.rectAreaLightUniformsLib, checkComplete, () => handleError('RectAreaLightUniformsLib'));
+            loadScript(THREEJS_CONFIG.rectAreaLightHelper, checkComplete, () => handleError('RectAreaLightHelper'));
+            loadScript(THREEJS_CONFIG.gsap, checkComplete, () => handleError('GSAP'));
+        }, () => handleError('Three.js Core'));
+    });
+}
+
+// Preload script to browser cache without executing
+function preloadScript(src) {
+    return new Promise((resolve, reject) => {
+        const link = document.createElement('link');
+        link.rel = 'prefetch';
+        link.href = src;
+        link.onload = resolve;
+        link.onerror = reject;
+        document.head.appendChild(link);
+        
+        // Also preload as script for immediate availability
+        const script = document.createElement('link');
+        script.rel = 'preload';
+        script.href = src;
+        script.as = 'script';
+        document.head.appendChild(script);
+        
+        setTimeout(resolve, 100); // Don't wait too long
+    });
 }
 
 // Export for use in model viewers

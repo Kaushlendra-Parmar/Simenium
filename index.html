@@ -9,15 +9,13 @@
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap" rel="stylesheet">
     <style>
         
-        /* Lazy loading styles */
-        .lazy-image {
-            transition: opacity 0.3s ease-in-out;
-        }
-        .lazy-image.loaded {
-            opacity: 1 !important;
+        /* Fast image loading styles */
+        .thumbnail-image {
+            transition: opacity 0.2s ease-in-out;
+            opacity: 1;
         }
         
-        /* Loading indicator for lazy images */
+        /* Loading indicator for failed images */
         .image-placeholder {
             display: flex;
             align-items: center;
@@ -152,7 +150,7 @@
                 </h2>                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-8 lg:gap-10">                    <!-- Active Card: Induction Motor -->
                     <a href="induction motor/index.html" class="bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col transition-all duration-300 hover:shadow-2xl hover:scale-105 no-underline">
                         <div class="w-full h-72 bg-slate-100 flex items-center justify-center">
-                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23f1f5f9'/%3E%3C/svg%3E" data-src="induction motor/thumbnail.png" alt="Three Phase Induction Motor Preview" class="lazy-image object-contain w-full h-full opacity-0 transition-opacity duration-300" />
+                            <img src="induction motor/thumbnail.png" alt="Three Phase Induction Motor Preview" class="thumbnail-image object-contain w-full h-full" loading="eager" />
                         </div>
                         <div class="p-4 flex-grow flex flex-col">
                             <h3 class="text-lg font-semibold text-deep-blue-gray mb-1">Three Phase Induction Motor</h3>
@@ -162,7 +160,7 @@
                     </a>                      <!-- Active Card: Insulators -->
                     <a href="Insulators/index.html" class="bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col transition-all duration-300 hover:shadow-2xl hover:scale-105 no-underline">
                         <div class="w-full h-72 bg-slate-100 flex items-center justify-center">
-                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23f1f5f9'/%3E%3C/svg%3E" data-src="Insulators/thumbnail.png" alt="Electrical Insulators Preview" class="lazy-image object-contain w-full h-full opacity-0 transition-opacity duration-300" />
+                            <img src="Insulators/thumbnail.png" alt="Electrical Insulators Preview" class="thumbnail-image object-contain w-full h-full" loading="eager" />
                         </div>
                         <div class="p-4 flex-grow flex flex-col">
                             <h3 class="text-lg font-semibold text-deep-blue-gray mb-1">Electrical Insulators</h3>
@@ -172,7 +170,7 @@
                     </a>                      <!-- Active Card: Transformer -->
                     <a href="transformer/index.html" class="bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col transition-all duration-300 hover:shadow-2xl hover:scale-105 no-underline">
                         <div class="w-full h-72 bg-slate-100 flex items-center justify-center">
-                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23f1f5f9'/%3E%3C/svg%3E" data-src="transformer/thumbnail.png" alt="Electrical Transformer Preview" class="lazy-image object-contain w-full h-full opacity-0 transition-opacity duration-300" />                        </div>
+                            <img src="transformer/thumbnail.png" alt="Electrical Transformer Preview" class="thumbnail-image object-contain w-full h-full" loading="eager" />                        </div>
                         <div class="p-4 flex-grow flex flex-col">
                             <h3 class="text-lg font-semibold text-deep-blue-gray mb-1">Electrical Transformer</h3>
                             <p class="text-xs font-medium text-sky-blue mb-0.5">Electrical Engineering</p>
@@ -181,7 +179,7 @@
                     </a>                      <!-- Active Card: DC Motor -->
                     <a href="dc motor/index.html" class="bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col transition-all duration-300 hover:shadow-2xl hover:scale-105 no-underline">
                         <div class="w-full h-72 bg-slate-100 flex items-center justify-center">
-                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23f1f5f9'/%3E%3C/svg%3E" data-src="dc motor/thumbnail.png" alt="DC Motor Preview" class="lazy-image object-contain w-full h-full opacity-0 transition-opacity duration-300" />
+                            <img src="dc motor/thumbnail.png" alt="DC Motor Preview" class="thumbnail-image object-contain w-full h-full" loading="eager" />
                         </div>
                         <div class="p-4 flex-grow flex flex-col">
                             <h3 class="text-lg font-semibold text-deep-blue-gray mb-1">DC Motor</h3>
@@ -191,7 +189,7 @@
                       <!-- Active Card: Galvanometer -->
                     <a href="galvanometer/index.html" class="bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col transition-all duration-300 hover:shadow-2xl hover:scale-105 no-underline">
                         <div class="w-full h-72 bg-slate-100 flex items-center justify-center">
-                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23f1f5f9'/%3E%3C/svg%3E" data-src="galvanometer/thumbnail.png" alt="Galvanometer Preview" class="lazy-image object-contain w-full h-full opacity-0 transition-opacity duration-300" />
+                            <img src="galvanometer/thumbnail.png" alt="Galvanometer Preview" class="thumbnail-image object-contain w-full h-full" loading="eager" />
                         </div>
                         <div class="p-4 flex-grow flex flex-col">
                             <h3 class="text-lg font-semibold text-deep-blue-gray mb-1">Galvanometer</h3>
@@ -201,7 +199,7 @@
                     </a>                      <!-- Active Card: Multimeter -->
                     <a href="multimeter/index.html" class="bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col transition-all duration-300 hover:shadow-2xl hover:scale-105 no-underline">
                         <div class="w-full h-72 bg-slate-100 flex items-center justify-center">
-                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23f1f5f9'/%3E%3C/svg%3E" data-src="multimeter/thumbnail.png" alt="Multimeter Preview" class="lazy-image object-contain w-full h-full opacity-0 transition-opacity duration-300" />                        </div>
+                            <img src="multimeter/thumbnail.png" alt="Multimeter Preview" class="thumbnail-image object-contain w-full h-full" loading="eager" />                        </div>
                         <div class="p-4 flex-grow flex flex-col">
                             <h3 class="text-lg font-semibold text-deep-blue-gray mb-1">Multimeter</h3>
                             <p class="text-xs font-medium text-sky-blue mb-0.5">Electrical Engineering</p>
@@ -210,7 +208,7 @@
                     </a>                      <!-- Active Card: Atom -->
                     <a href="atom/index.html" class="bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col transition-all duration-300 hover:shadow-2xl hover:scale-105 no-underline">
                         <div class="w-full h-72 bg-slate-100 flex items-center justify-center">
-                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23f1f5f9'/%3E%3C/svg%3E" data-src="atom/thumbnail.png" alt="Atom Preview" class="lazy-image object-contain w-full h-full opacity-0 transition-opacity duration-300" />
+                            <img src="atom/thumbnail.png" alt="Atom Preview" class="thumbnail-image object-contain w-full h-full" loading="eager" />
                         </div>
                         <div class="p-4 flex-grow flex flex-col">
                             <h3 class="text-lg font-semibold text-deep-blue-gray mb-1">Atom Structure</h3>
@@ -220,7 +218,7 @@
                     </a>                      <!-- Active Card: Cells -->
                     <a href="cells/index.html" class="bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col transition-all duration-300 hover:shadow-2xl hover:scale-105 no-underline">
                         <div class="w-full h-72 bg-slate-100 flex items-center justify-center">
-                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23f1f5f9'/%3E%3C/svg%3E" data-src="cells/thumbnail.png" alt="Cells Preview" class="lazy-image object-contain w-full h-full opacity-0 transition-opacity duration-300" />
+                            <img src="cells/thumbnail.png" alt="Cells Preview" class="thumbnail-image object-contain w-full h-full" loading="eager" />
                         </div>
                         <div class="p-4 flex-grow flex flex-col">
                             <h3 class="text-lg font-semibold text-deep-blue-gray mb-1">Cell Biology</h3>
@@ -230,7 +228,7 @@
                     </a>                      <!-- Active Card: DNA & RNA -->
                     <a href="dna & rna/index.html" class="bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col transition-all duration-300 hover:shadow-2xl hover:scale-105 no-underline">
                         <div class="w-full h-72 bg-slate-100 flex items-center justify-center">
-                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23f1f5f9'/%3E%3C/svg%3E" data-src="dna & rna/thumbnail.png" alt="DNA & RNA Preview" class="lazy-image object-contain w-full h-full opacity-0 transition-opacity duration-300" />                        </div>
+                            <img src="dna & rna/thumbnail.png" alt="DNA & RNA Preview" class="thumbnail-image object-contain w-full h-full" loading="eager" />                        </div>
                         <div class="p-4 flex-grow flex flex-col">
                             <h3 class="text-lg font-semibold text-deep-blue-gray mb-1">DNA & RNA</h3>
                             <p class="text-xs font-medium text-sky-blue mb-0.5">Biology</p>
@@ -239,7 +237,7 @@
                     </a>                      <!-- Active Card: Digestive System -->
                     <a href="digestive system/index.html" class="bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col transition-all duration-300 hover:shadow-2xl hover:scale-105 no-underline">
                         <div class="w-full h-72 bg-slate-100 flex items-center justify-center">
-                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23f1f5f9'/%3E%3C/svg%3E" data-src="digestive system/thumbnail.png" alt="Digestive System Preview" class="lazy-image object-contain w-full h-full opacity-0 transition-opacity duration-300" />
+                            <img src="digestive system/thumbnail.png" alt="Digestive System Preview" class="thumbnail-image object-contain w-full h-full" loading="eager" />
                         </div>
                         <div class="p-4 flex-grow flex flex-col">
                             <h3 class="text-lg font-semibold text-deep-blue-gray mb-1">Digestive System</h3>
@@ -249,7 +247,7 @@
                     </a>                      <!-- Active Card: Neuron -->
                     <a href="neuron/index.html" class="bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col transition-all duration-300 hover:shadow-2xl hover:scale-105 no-underline">
                         <div class="w-full h-72 bg-slate-100 flex items-center justify-center">
-                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23f1f5f9'/%3E%3C/svg%3E" data-src="neuron/thumbnail.png" alt="Neuron Preview" class="lazy-image object-contain w-full h-full opacity-0 transition-opacity duration-300" />
+                            <img src="neuron/thumbnail.png" alt="Neuron Preview" class="thumbnail-image object-contain w-full h-full" loading="eager" />
                         </div>
                         <div class="p-4 flex-grow flex flex-col">
                             <h3 class="text-lg font-semibold text-deep-blue-gray mb-1">Neuron</h3>
@@ -259,7 +257,7 @@
                     </a>                      <!-- Active Card: Solar System -->
                     <a href="solar system/index.html" class="bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col transition-all duration-300 hover:shadow-2xl hover:scale-105 no-underline">
                         <div class="w-full h-72 bg-slate-100 flex items-center justify-center">
-                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23f1f5f9'/%3E%3C/svg%3E" data-src="solar system/thumbnail.png" alt="Solar System Preview" class="lazy-image object-contain w-full h-full opacity-0 transition-opacity duration-300" />                        </div>
+                            <img src="solar system/thumbnail.png" alt="Solar System Preview" class="thumbnail-image object-contain w-full h-full" loading="eager" />                        </div>
                         <div class="p-4 flex-grow flex flex-col">
                             <h3 class="text-lg font-semibold text-deep-blue-gray mb-1">Solar System</h3>
                             <p class="text-xs font-medium text-sky-blue mb-0.5">Astronomy</p>
@@ -268,7 +266,7 @@
                     </a>                      <!-- Active Card: Water Cycle -->
                     <a href="water cycle/index.html" class="bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col transition-all duration-300 hover:shadow-2xl hover:scale-105 no-underline">
                         <div class="w-full h-72 bg-slate-100 flex items-center justify-center">
-                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23f1f5f9'/%3E%3C/svg%3E" data-src="water cycle/thumbnail.png" alt="Water Cycle Preview" class="lazy-image object-contain w-full h-full opacity-0 transition-opacity duration-300" />
+                            <img src="water cycle/thumbnail.png" alt="Water Cycle Preview" class="thumbnail-image object-contain w-full h-full" loading="eager" />
                         </div>
                         <div class="p-4 flex-grow flex flex-col">
                             <h3 class="text-lg font-semibold text-deep-blue-gray mb-1">Water Cycle</h3>
@@ -321,67 +319,35 @@
             <p>&copy; <span id="currentYear"></span> Simenium. All rights reserved.</p>
             <p class="text-xs mt-1">Designed for a brighter learning future.</p>
         </div>
-    </footer>    <script>    // Lazy loading implementation for homepage images with loading states
-    const lazyImages = document.querySelectorAll('.lazy-image');
-    
-    const imageObserver = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const img = entry.target;
-                const src = img.getAttribute('data-src');
-                
-                if (src) {
-                    // Create a new image element to preload
-                    const preloader = new Image();
-                    preloader.onload = () => {
-                        img.src = src;
-                        img.style.opacity = '1';
-                        img.classList.add('loaded');
-                        // Stop the shimmer animation
-                        img.style.animation = 'none';
-                        img.style.background = 'none';
-                        img.style.backgroundSize = 'auto';
-                    };
-                    preloader.onerror = () => {
-                        // Fallback in case of loading error
-                        img.style.opacity = '0.5';
-                        img.style.animation = 'none';
-                        img.style.background = '#f1f5f9'; // Solid gray fallback
-                        console.warn('Failed to load image:', src);
-                    };
-                    preloader.src = src;
-                    
-                    img.removeAttribute('data-src');
-                    observer.unobserve(img);
-                }
-            }
+    </footer>    <script>    // Fast image loading with error handling for better performance
+    document.addEventListener('DOMContentLoaded', function() {
+        // Fast image error handling for better UX
+        const thumbnailImages = document.querySelectorAll('.thumbnail-image');
+        
+        thumbnailImages.forEach(img => {
+            img.onerror = function() {
+                // Create fallback placeholder if image fails to load
+                this.style.display = 'none';
+                const placeholder = document.createElement('div');
+                placeholder.className = 'image-placeholder w-full h-full flex items-center justify-center bg-gray-100 text-gray-500';
+                placeholder.textContent = 'Image unavailable';
+                this.parentElement.appendChild(placeholder);
+                console.warn('Failed to load thumbnail:', this.src);
+            };
+            
+            img.onload = function() {
+                // Image loaded successfully - ensure it's visible
+                this.style.opacity = '1';
+            };
         });
-    }, {
-        root: null,
-        rootMargin: '50px',
-        threshold: 0.1
-    });
-    
-    lazyImages.forEach(img => {
-        imageObserver.observe(img);
-        // Add a subtle loading indicator
-        img.style.background = 'linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%)';
-        img.style.backgroundSize = '200% 100%';
-        img.style.animation = 'shimmer 1.5s infinite';
-    });
-    
-    // Add shimmer effect CSS
-    if (!document.getElementById('shimmer-style')) {
-        const style = document.createElement('style');
-        style.id = 'shimmer-style';
-        style.textContent = `
-            @keyframes shimmer {
-                0% { background-position: -200% 0; }
-                100% { background-position: 200% 0; }
+        
+        // Preload additional thumbnails for faster navigation
+        setTimeout(() => {
+            if (window.SimeniumAssetManager) {
+                window.SimeniumAssetManager.preloadHomepageThumbnails();
             }
-        `;
-        document.head.appendChild(style);
-    }
+        }, 1000);
+    });
 
     // Make Home link scroll to top
     document.addEventListener('DOMContentLoaded', function() {
