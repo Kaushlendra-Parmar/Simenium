@@ -6,7 +6,7 @@
 - [x] Removed lazy loading from homepage thumbnails
 - [x] Added immediate image loading with `loading="eager"`
 - [x] Implemented error handling for missing images
-- [x] Added preloading for critical thumbnails
+- [x] Removed all background preloading functionality
 - [x] Direct `src` attributes for all images
 
 ### Three.js Loading Optimizations
