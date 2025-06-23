@@ -12,7 +12,8 @@
     "className\\s*[:=]\\s*['\"]([^'\"]*)['\"]"
   ],
   "files.associations": {
-    "*.css": "tailwindcss"
+    "*.css": "tailwindcss",
+    ".browserslistrc": "plaintext"
   },
   "editor.quickSuggestions": {
     "strings": true

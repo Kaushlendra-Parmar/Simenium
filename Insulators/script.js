@@ -181,9 +181,11 @@ function setupModelButtons() {
 // Load and display a 3D model
 function loadModel(modelName) {
     const loader = new THREE.GLTFLoader();
-    const modelPath = `${CONFIG.modelsPath}/${modelName}`;
+    // Encode filename to handle spaces and special characters
+    const encodedModelName = encodeURIComponent(modelName);
+    const modelPath = `${CONFIG.modelsPath}/${encodedModelName}`;
 
-    console.log(`Loading model: ${modelPath}`);
+    console.log(`Loading model: ${modelName} from ${modelPath}`);
 
     // Clear existing models
     loadedModels.forEach(model => scene.remove(model));

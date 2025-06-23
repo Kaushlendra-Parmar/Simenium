@@ -4,7 +4,10 @@
   "description": "Interactive 3D educational models",
   "scripts": {
     "build-css": "tailwindcss -i ./src/input.css -o ./dist/output.css --watch",
-    "build": "tailwindcss -i ./src/input.css -o ./dist/output.css --minify"
+    "build": "tailwindcss -i ./src/input.css -o ./dist/output.css --minify",
+    "dev": "tailwindcss -i ./src/input.css -o ./dist/output.css --watch & python -m http.server 8000",
+    "serve": "python -m http.server 8000",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.21",
