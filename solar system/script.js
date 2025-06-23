@@ -270,39 +270,60 @@ function clearAllModels() {
     });
     loadedModels = [];
     
-    // Force cleanup of any remaining model objects (more selective)
-    const objectsToRemove = [];
-    scene.traverse((child) => {
-        // Keep lights, camera, and other essential objects
-        // Only remove objects that look like loaded models
-        if (child !== scene && 
-            !child.isLight && 
+    // Force cleanup of any remaining non-light objects - MORE AGGRESSIVE
+    const childrenToRemove = [];
+    scene.children.forEach((child) => {
+        // Only keep lights - remove everything else including groups and meshes
+        if (!child.isLight && 
             !child.isCamera && 
-            !child.isDirectionalLight &&
             !child.isAmbientLight &&
+            !child.isDirectionalLight &&
             !child.isPointLight &&
             !child.isRectAreaLight &&
-            child.parent === scene &&
-            (child.type === 'Group' || child.type === 'Object3D' || child.isMesh) &&
-            child.name && 
-            (child.name.includes('.glb') || child.name.includes('Scene'))) {
-            objectsToRemove.push(child);
+            child.type !== 'DirectionalLightHelper' &&
+            child.type !== 'PointLightHelper') {
+            childrenToRemove.push(child);
         }
     });
     
-    objectsToRemove.forEach(obj => {
+    // Remove all identified objects
+    childrenToRemove.forEach(obj => {
+        console.log(`Removing object of type: ${obj.type}, name: ${obj.name}`);
         scene.remove(obj);
-        if (obj.geometry) obj.geometry.dispose();
-        if (obj.material) {
-            if (Array.isArray(obj.material)) {
-                obj.material.forEach(material => material.dispose());
-            } else {
-                obj.material.dispose();
+        
+        // Dispose of resources
+        if (obj.traverse) {
+            obj.traverse((child) => {
+                if (child.geometry) {
+                    child.geometry.dispose();
+                }
+                if (child.material) {
+                    if (Array.isArray(child.material)) {
+                        child.material.forEach(material => material.dispose());
+                    } else {
+                        child.material.dispose();
+                    }
+                }
+            });
+        } else {
+            // Direct disposal for non-traversable objects
+            if (obj.geometry) obj.geometry.dispose();
+            if (obj.material) {
+                if (Array.isArray(obj.material)) {
+                    obj.material.forEach(material => material.dispose());
+                } else {
+                    obj.material.dispose();
+                }
             }
         }
     });
     
     console.log(`Scene cleaned, now has ${scene.children.length} objects`);
+    
+    // Force renderer to clear its internal cache
+    if (renderer) {
+        renderer.renderLists.dispose();
+    }
 }
 
 // =============================================================================
@@ -432,11 +453,26 @@ function loadModel(modelName) {
             const box = new THREE.Box3().setFromObject(model);
             const center = new THREE.Vector3();
             box.getCenter(center);
-            model.position.sub(center);            scene.add(model);
+            model.position.sub(center);            
+            
+            // Ensure this is the only model in the scene before adding
+            console.log(`About to add model. Scene currently has ${scene.children.length} objects`);
+            
+            scene.add(model);
             loadedModels.push(model);
+            
+            console.log(`Model added. Scene now has ${scene.children.length} objects`);
 
             // Setup animations if available
             if (gltf.animations && gltf.animations.length > 0) {
+                console.log(`Setting up animations for model...`);
+                
+                // Stop any existing mixer before creating new one
+                if (mixer) {
+                    mixer.stopAllAction();
+                    mixer = null;
+                }
+                
                 // Create animation mixer
                 mixer = new THREE.AnimationMixer(model);
                 animationActions = [];
@@ -446,9 +482,13 @@ function loadModel(modelName) {
                     const action = mixer.clipAction(clip);
                     animationActions.push(action);
                     action.setLoop(THREE.LoopRepeat);
+                    // Set initial state to prevent auto-play
+                    action.setEffectiveWeight(1);
+                    action.enabled = true;
                 });
                 
                 console.log(`Found ${gltf.animations.length} animation(s) in the model`);
+                console.log(`Scene after animation setup has ${scene.children.length} objects`);
                 
                 // Show animation controls
                 updateAnimationControls();
@@ -458,6 +498,13 @@ function loadModel(modelName) {
                 if (animationControls) {
                     animationControls.style.display = 'none';
                 }
+                // Clear any existing mixer
+                if (mixer) {
+                    mixer.stopAllAction();
+                    mixer = null;
+                }
+                animationActions = [];
+                isPlaying = false;
             }
 
             console.log(`Model ${modelName} loaded successfully`);
@@ -480,23 +527,50 @@ function loadModel(modelName) {
 function playAnimation() {
     if (mixer && animationActions.length > 0) {
         console.log('Starting animation...');
-        debugSceneContents(); // Debug before animation
         
-        animationActions.forEach(action => {
-            if (!action.isRunning()) {
-                action.reset();
+        // Ensure we have exactly one model before starting animation
+        if (loadedModels.length > 1) {
+            console.warn('Multiple models detected, cleaning up duplicates...');
+            // Keep only the last loaded model (most recent)
+            const modelToKeep = loadedModels[loadedModels.length - 1];
+            
+            // Remove all other models
+            for (let i = 0; i < loadedModels.length - 1; i++) {
+                const modelToRemove = loadedModels[i];
+                scene.remove(modelToRemove);
+                
+                // Dispose of resources
+                modelToRemove.traverse((child) => {
+                    if (child.geometry) child.geometry.dispose();
+                    if (child.material) {
+                        if (Array.isArray(child.material)) {
+                            child.material.forEach(material => material.dispose());
+                        } else {
+                            child.material.dispose();
+                        }
+                    }
+                });
             }
+            
+            // Update loadedModels array to contain only the one model
+            loadedModels = [modelToKeep];
+        }
+        
+        // Stop all current actions to prevent conflicts
+        mixer.stopAllAction();
+        
+        // Start animations fresh
+        animationActions.forEach(action => {
+            action.reset();
+            action.setEffectiveWeight(1);
+            action.setEffectiveTimeScale(1);
             action.paused = false;
             action.play();
         });
+        
         isPlaying = true;
         updateAnimationControls();
-        console.log('Animation started');
-        
-        // Debug after animation start
-        setTimeout(() => {
-            debugSceneContents();
-        }, 100);
+        console.log('Animation started with single model');
     }
 }
 
@@ -515,6 +589,28 @@ function pauseAnimation() {
 // Resume animation
 function resumeAnimation() {
     if (mixer && animationActions.length > 0) {
+        // Ensure no duplicate models when resuming
+        if (loadedModels.length > 1) {
+            console.warn('Multiple models detected during resume, cleaning up...');
+            const modelToKeep = loadedModels[loadedModels.length - 1];
+            
+            for (let i = 0; i < loadedModels.length - 1; i++) {
+                const modelToRemove = loadedModels[i];
+                scene.remove(modelToRemove);
+                modelToRemove.traverse((child) => {
+                    if (child.geometry) child.geometry.dispose();
+                    if (child.material) {
+                        if (Array.isArray(child.material)) {
+                            child.material.forEach(material => material.dispose());
+                        } else {
+                            child.material.dispose();
+                        }
+                    }
+                });
+            }
+            loadedModels = [modelToKeep];
+        }
+        
         animationActions.forEach(action => {
             action.paused = false;
         });
@@ -932,6 +1028,30 @@ function setupUIHandlers() {
 
 function animate() {
     requestAnimationFrame(animate);
+    
+    // Safety check: Remove duplicate models if they appear during animation
+    if (loadedModels.length > 1) {
+        console.warn('Duplicate models detected in animation loop, cleaning up...');
+        const modelToKeep = loadedModels[loadedModels.length - 1];
+        
+        for (let i = 0; i < loadedModels.length - 1; i++) {
+            const modelToRemove = loadedModels[i];
+            scene.remove(modelToRemove);
+            
+            // Dispose of resources
+            modelToRemove.traverse((child) => {
+                if (child.geometry) child.geometry.dispose();
+                if (child.material) {
+                    if (Array.isArray(child.material)) {
+                        child.material.forEach(material => material.dispose());
+                    } else {
+                        child.material.dispose();
+                    }
+                }
+            });
+        }
+        loadedModels = [modelToKeep];
+    }
     
     // Update animation mixer with safety checks
     const delta = clock.getDelta();
