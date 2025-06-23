@@ -1,0 +1,12 @@
+{
+  "name": "simenium",
+  "version": "1.0.0",
+  "description": "Interactive 3D educational models",
+  "scripts": {
+    "build-css": "tailwindcss -i ./src/input.css -o ./dist/output.css --watch",
+    "build": "tailwindcss -i ./src/input.css -o ./dist/output.css --minify"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.0"
+  }
+}

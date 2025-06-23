@@ -38,11 +38,37 @@ let modelLocations = {}; // Store locations for each model
 // Load model locations from JSON file
 async function loadModelLocations() {
     try {
+        console.log('Loading locations from:', CONFIG.locationsPath);
         // Use explicit relative path to ensure it loads from this subfolder's models directory
         const response = await fetch(CONFIG.locationsPath);
-        const locations = await response.json();
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const text = await response.text();
+        console.log('Raw JSON response:', text.substring(0, 200) + '...');
+        
+        let locations;
+        try {
+            locations = JSON.parse(text);
+        } catch (parseError) {
+            console.error('JSON parse error:', parseError);
+            console.error('Invalid JSON content:', text);
+            throw new Error(`Invalid JSON in locations.json: ${parseError.message}`);
+        }
+        
         console.log('Loaded locations:', locations);
-        locations.forEach(location => {
+        
+        if (!Array.isArray(locations)) {
+            throw new Error('locations.json must contain an array of objects');
+        }
+        
+        locations.forEach((location, index) => {
+            if (!location.name || !location.from || !location.to) {
+                console.error(`Invalid location object at index ${index}:`, location);
+                return;
+            }
             modelLocations[location.name] = {
                 from: { x: location.from[0], y: location.from[1], z: location.from[2] },
                 to: { x: location.to[0], y: location.to[1], z: location.to[2] }
