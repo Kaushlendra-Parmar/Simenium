@@ -9,6 +9,29 @@
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap" rel="stylesheet">
     <style>
         
+        /* Prevent horizontal scrolling globally */
+        html, body {
+            overflow-x: hidden;
+            max-width: 100%;
+            position: relative;
+        }
+        
+        /* Ensure all elements stay within viewport */
+        *, *::before, *::after {
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+        
+        /* Container safety - prevent any container from exceeding viewport */
+        .container, main, section, div {
+            max-width: 100%;
+        }
+        
+        /* Ensure dropdown doesn't cause overflow on small screens */
+        .dropdown-content {
+            max-width: calc(100vw - 2rem);
+        }
+        
         /* Fast image loading styles */
         .thumbnail-image {
             transition: opacity 0.2s ease-in-out;
@@ -88,19 +111,6 @@
         
         /* Mobile-specific styles */
         @media (max-width: 768px) {
-            /* Prevent horizontal overflow */
-            html, body {
-                overflow-x: hidden;
-                max-width: 100vw;
-                position: relative;
-            }
-            
-            /* Fix for any elements that might cause overflow */
-            *, *::before, *::after {
-                max-width: 100%;
-                box-sizing: border-box;
-            }
-            
             /* Mobile hamburger icon rotation */
             .rotate-180 {
                 transform: rotate(180deg);
@@ -111,7 +121,7 @@
                 transition: transform 0.2s ease;
             }
             
-            /* Ensure all containers stay within viewport */
+            /* Additional mobile constraints */
             .container {
                 max-width: 100% !important;
                 padding-left: 1rem !important;
@@ -227,7 +237,7 @@
 
     <main>
       <!-- Gradient overlay directly below navbar, attached to page scroll -->
-      <div style="width: 100vw; height: 110px; pointer-events: none; z-index: 10; background: linear-gradient(to bottom, rgba(59,130,246,0.18) 0%, rgba(59,130,246,0.09) 40%, rgba(248,250,252,0.0) 100%);"></div>
+      <div style="width: 100%; height: 110px; pointer-events: none; z-index: 10; background: linear-gradient(to bottom, rgba(59,130,246,0.18) 0%, rgba(59,130,246,0.09) 40%, rgba(248,250,252,0.0) 100%);"></div>
         <section id="hero" class="bg-cloud-white pt-1 pb-16 md:pt-0 md:pb-24 flex flex-col items-center justify-center text-center px-4" style="scroll-margin-top: 0;">
             <div class="max-w-4xl mx-auto">
                 <h1 class="text-5xl sm:text-6xl md:text-7xl font-bold text-deep-blue-gray">
@@ -250,7 +260,7 @@
         </section>
 
         <section id="featured-models" class="py-16 md:py-24 bg-cloud-white">
-            <div class="mx-auto px-2 sm:px-4 max-w-5xl">
+            <div class="mx-auto px-4 md:px-6 max-w-5xl">
                 <h2 class="text-3xl md:text-4xl font-bold text-deep-blue-gray text-center mb-10 md:mb-14">
                     Featured Models
                 </h2>                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8 lg:gap-10">                    <!-- Active Card: Induction Motor -->
