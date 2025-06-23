@@ -370,34 +370,6 @@ window.SimeniumAssetManager = {
         return results;
     },
     
-    // Preload critical homepage thumbnails for faster loading
-    preloadHomepageThumbnails: function() {
-        console.log('📸 Preloading homepage thumbnails for faster experience...');
-        
-        const thumbnailPaths = [
-            './induction motor/thumbnail.png',
-            './Insulators/thumbnail.png', 
-            './transformer/thumbnail.png',
-            './dc motor/thumbnail.png',
-            './galvanometer/thumbnail.png',
-            './multimeter/thumbnail.png',
-            './atom/thumbnail.png',
-            './cells/thumbnail.png'
-        ];
-        
-        this.preloadAssets(thumbnailPaths.map(path => ({
-            url: path,
-            options: { type: 'image', timeout: 10000 }
-        })), {
-            showProgress: false,
-            progressCallback: (progress, loaded, total, url) => {
-                if (loaded === total) {
-                    console.log(`✅ All ${total} homepage thumbnails preloaded`);
-                }
-            }
-        });
-    },
-    
     // Clear cache
     clearCache: function() {
         this.assetCache.clear();

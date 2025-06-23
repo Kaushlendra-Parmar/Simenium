@@ -374,12 +374,6 @@
             // Element doesn't exist, prevent default and show message
             e.preventDefault();
             console.log(`Section "${targetId}" is not available yet.`);
-            // Optionally show a user-friendly message
-            if (targetId === 'contact') {
-              alert('Contact section is coming soon! Please check back later.');
-            } else if (targetId === 'about-us') {
-              alert('About Us section is coming soon! Please check back later.');
-            }
           }
         });
       });
