@@ -85,22 +85,125 @@
             background-color: #F8FAFC;
             color: #38BDF8;
         }
+        
+        /* Mobile menu styles */
+        .mobile-menu-btn {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            padding: 4px;
+        }
+        
+        .mobile-menu-btn span {
+            display: block;
+            height: 3px;
+            width: 25px;
+            background-color: #1E293B;
+            margin: 3px 0;
+            transition: 0.3s;
+            border-radius: 2px;
+        }
+        
+        .mobile-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background-color: white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border-radius: 0 0 8px 8px;
+            z-index: 1000;
+        }
+        
+        .mobile-menu.active {
+            display: block;
+        }
+        
+        .mobile-menu a {
+            display: block;
+            padding: 12px 24px;
+            color: #1E293B;
+            text-decoration: none;
+            border-bottom: 1px solid #E2E8F0;
+            transition: background-color 0.2s;
+        }
+        
+        .mobile-menu a:hover {
+            background-color: #F8FAFC;
+            color: #38BDF8;
+        }
+        
+        .mobile-menu a:last-child {
+            border-bottom: none;
+        }
+        
+        /* Mobile dropdown styles */
+        .mobile-categories {
+            background-color: #F8FAFC;
+        }
+        
+        .mobile-categories a {
+            padding-left: 40px;
+            font-size: 14px;
+            color: #64748B;
+        }
+        
+        @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: flex;
+            }
+            
+            .desktop-nav {
+                display: none;
+            }
+            
+            .dropdown {
+                display: none;
+            }
+            
+            /* Prevent horizontal scroll on mobile */
+            body {
+                overflow-x: hidden;
+            }
+            
+            /* Ensure containers don't exceed viewport width */
+            .container {
+                max-width: 100%;
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+        }
+        
+        @media (min-width: 769px) {
+            .mobile-menu {
+                display: none !important;
+            }
+        }
+        
+        /* Prevent horizontal scroll globally */
+        html, body {
+            max-width: 100%;
+            overflow-x: hidden;
+        }
     </style>
 </head>
 <body>
 
 
     <header class="bg-cloud-white shadow-xl sticky top-0 z-50" style="position: sticky; top: 0; z-index: 50; box-shadow: 0 8px 32px 0 rgba(30,41,59,0.18), 0 1.5px 6px 0 rgba(59,130,246,0.10);">
-        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <div class="text-3xl font-bold text-deep-blue-gray">
+        <nav class="container mx-auto px-4 sm:px-6 py-4 flex justify-between items-center relative">
+            <div class="text-2xl sm:text-3xl font-bold text-deep-blue-gray">
                 Simenium
             </div>
-            <div class="flex items-center">
-                <a href="#" id="home-link" class="text-deep-blue-gray hover:text-sky-blue transition duration-300 mr-6">Home</a>
+            
+            <!-- Desktop Navigation -->
+            <div class="desktop-nav flex items-center">
+                <a href="#" id="home-link" class="text-deep-blue-gray hover:text-sky-blue transition duration-300 mr-4 lg:mr-6 text-sm lg:text-base">Home</a>
                 
                 <!-- Categories Dropdown -->
-                <div class="dropdown mr-6">
-                    <a href="#" class="text-deep-blue-gray hover:text-sky-blue transition duration-300">
+                <div class="dropdown mr-4 lg:mr-6">
+                    <a href="#" class="text-deep-blue-gray hover:text-sky-blue transition duration-300 text-sm lg:text-base">
                         Categories
                     </a>
                     <div class="dropdown-content">
@@ -113,31 +216,53 @@
                     </div>
                 </div>
                 
-                <a href="#about-us" class="text-deep-blue-gray hover:text-sky-blue transition duration-300 mr-6">About Us</a>
-                <a href="#contact" class="text-deep-blue-gray hover:text-sky-blue transition duration-300">Contact Us</a>
+                <a href="#about-us" class="text-deep-blue-gray hover:text-sky-blue transition duration-300 mr-4 lg:mr-6 text-sm lg:text-base">About Us</a>
+                <a href="#contact" class="text-deep-blue-gray hover:text-sky-blue transition duration-300 text-sm lg:text-base">Contact Us</a>
+            </div>
+            
+            <!-- Mobile Menu Button -->
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            
+            <!-- Mobile Navigation Menu -->
+            <div class="mobile-menu" id="mobile-menu">
+                <a href="#" onclick="closeMobileMenu(); scrollToTop();">Home</a>
+                <a href="#about-us" onclick="closeMobileMenu(); scrollToSection('about-us');">About Us</a>
+                <a href="#contact" onclick="closeMobileMenu(); scrollToSection('contact');">Contact Us</a>
+                <div class="mobile-categories">
+                    <a href="javascript:void(0)" onclick="closeMobileMenu(); filterByCategory('electrical')">⚡ Electrical Engineering</a>
+                    <a href="javascript:void(0)" onclick="closeMobileMenu(); filterByCategory('biology')">🧬 Biology</a>
+                    <a href="javascript:void(0)" onclick="closeMobileMenu(); filterByCategory('chemistry')">🧪 Chemistry</a>
+                    <a href="javascript:void(0)" onclick="closeMobileMenu(); filterByCategory('astronomy')">🌟 Astronomy</a>
+                    <a href="javascript:void(0)" onclick="closeMobileMenu(); filterByCategory('environmental')">🌍 Environmental Science</a>
+                    <a href="javascript:void(0)" onclick="closeMobileMenu(); filterByCategory('all')">📚 All Categories</a>
+                </div>
             </div>
         </nav>
     </header>
 
     <main>
       <!-- Gradient overlay directly below navbar, attached to page scroll -->
-      <div style="width: 100vw; height: 110px; pointer-events: none; z-index: 10; background: linear-gradient(to bottom, rgba(59,130,246,0.18) 0%, rgba(59,130,246,0.09) 40%, rgba(248,250,252,0.0) 100%);"></div>
-        <section id="hero" class="bg-cloud-white pt-1 pb-16 md:pt-0 md:pb-24 flex flex-col items-center justify-center text-center px-4" style="scroll-margin-top: 0;">
+      <div style="width: 100%; height: 110px; pointer-events: none; z-index: 10; background: linear-gradient(to bottom, rgba(59,130,246,0.18) 0%, rgba(59,130,246,0.09) 40%, rgba(248,250,252,0.0) 100%);"></div>
+        <section id="hero" class="bg-cloud-white pt-8 pb-16 md:pt-16 md:pb-24 flex flex-col items-center justify-center text-center px-4 sm:px-6" style="scroll-margin-top: 0;">
             <div class="max-w-4xl mx-auto">
-                <h1 class="text-5xl sm:text-6xl md:text-7xl font-bold text-deep-blue-gray">
+                <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-deep-blue-gray">
                     Simenium
                 </h1>
-                <p class="mt-3 text-2xl sm:text-3xl md:text-4xl font-medium text-deep-blue-gray">
+                <p class="mt-3 text-xl sm:text-2xl md:text-3xl lg:text-4xl font-medium text-deep-blue-gray">
                     Assuming?
                     <span class="text-sky-400">Nahhh.</span>
                     Feeling?
                     <span class="text-sky-400">Yesss.</span>
                 </p>
-                <p class="mt-6 max-w-2xl mx-auto text-lg md:text-xl text-slate-600">
+                <p class="mt-6 max-w-2xl mx-auto text-base sm:text-lg md:text-xl text-slate-600 leading-relaxed">
                     Dive into interactive 3D models and transform your understanding of complex subjects.
                 </p>
                 <a href="#featured-models"
-                   class="mt-10 inline-block bg-royal-blue text-white font-semibold py-3 px-10 rounded-lg shadow-md hover:bg-royal-blue-dark transition-transform duration-300 ease-in-out transform hover:scale-105">
+                   class="mt-8 sm:mt-10 inline-block bg-royal-blue text-white font-semibold py-3 px-8 sm:px-10 rounded-lg shadow-md hover:bg-royal-blue-dark transition-transform duration-300 ease-in-out transform hover:scale-105 text-sm sm:text-base">
                     Explore Models
                 </a>
             </div>
@@ -319,7 +444,44 @@
             <p>&copy; <span id="currentYear"></span> Simenium. All rights reserved.</p>
             <p class="text-xs mt-1">Designed for a brighter learning future.</p>
         </div>
-    </footer>    <script>    // Fast image loading with error handling for better performance
+    </footer>    <script>
+    // Mobile menu functionality
+    function toggleMobileMenu() {
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenu.classList.toggle('active');
+    }
+    
+    function closeMobileMenu() {
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenu.classList.remove('active');
+    }
+    
+    function scrollToTop() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        if (window.location.hash) {
+            history.pushState(null, null, window.location.pathname + window.location.search);
+        }
+    }
+    
+    function scrollToSection(sectionId) {
+        const element = document.getElementById(sectionId);
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth' });
+            history.pushState(null, null, '#' + sectionId);
+        }
+    }
+    
+    // Close mobile menu when clicking outside
+    document.addEventListener('click', function(event) {
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuBtn = document.querySelector('.mobile-menu-btn');
+        
+        if (mobileMenu && menuBtn && !mobileMenu.contains(event.target) && !menuBtn.contains(event.target)) {
+            closeMobileMenu();
+        }
+    });
+    
+    // Fast image loading with error handling for better performance
     document.addEventListener('DOMContentLoaded', function() {
         // Fast image error handling for better UX
         const thumbnailImages = document.querySelectorAll('.thumbnail-image');
