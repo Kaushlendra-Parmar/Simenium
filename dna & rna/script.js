@@ -317,7 +317,10 @@ function loadModel(modelName) {
             console.log(`Model ${modelName} loaded successfully`);
         },
         (progress) => {
-            console.log('Loading progress:', (progress.loaded / progress.total * 100) + '% loaded');
+            // Only log progress in debug mode to improve performance
+            if (window.location.search.includes('debug=true')) {
+                console.log('Loading progress:', (progress.loaded / progress.total * 100) + '% loaded');
+            }
         },
         (error) => {
             console.error('Error loading model:', error);

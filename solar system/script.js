@@ -372,12 +372,8 @@ function setupModelButtons() {
         const firstBtn = partsButtons.querySelector('.part-btn');
         if (firstBtn) firstBtn.classList.add('selected');
         
-        // Use lazy loading system instead of immediate load
-        if (!isLazyLoadingEnabled) {
-            // If lazy loading already triggered, load immediately
-            loadModel(MODELS[0].name);
-        }
-        // Otherwise, lazy loading system will handle it
+        // Load model immediately for better performance
+        loadModel(MODELS[0].name);
     }
     
     // Attach event listeners for buttons
@@ -507,11 +503,16 @@ function loadModel(modelName) {
                 isPlaying = false;
             }
 
-            console.log(`Model ${modelName} loaded successfully`);
-            debugSceneContents(); // Debug after model load
+            if (window.location.search.includes('debug=true')) {
+                console.log(`Model ${modelName} loaded successfully`);
+            }
+            // Remove debug call to improve performance
         },
         (progress) => {
-            console.log('Loading progress:', (progress.loaded / progress.total * 100) + '% loaded');
+            // Only log progress in debug mode to improve performance
+            if (window.location.search.includes('debug=true')) {
+                console.log('Loading progress:', (progress.loaded / progress.total * 100) + '% loaded');
+            }
         },
         (error) => {
             console.error('Error loading model:', error);
@@ -910,63 +911,6 @@ function initSettingsFeatures() {
 }
 
 // =============================================================================
-// LAZY LOADING SYSTEM
-// =============================================================================
-
-let isLazyLoadingEnabled = true;
-let hasUserInteracted = false;
-let lazyLoadingObserver = null;
-
-// Initialize lazy loading system
-function initLazyLoading() {
-    // Create intersection observer for viewport detection
-    lazyLoadingObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting && isLazyLoadingEnabled) {
-                console.log('3D viewer area is visible, triggering lazy load...');
-                triggerLazyModelLoad();
-                lazyLoadingObserver.disconnect();
-            }
-        });
-    }, {
-        root: null,
-        rootMargin: '100px',
-        threshold: 0.1
-    });
-    
-    // Observe the canvas element
-    const canvas = document.getElementById('canvas');
-    if (canvas) {
-        lazyLoadingObserver.observe(canvas);
-    }
-    
-    // Also listen for user interactions
-    document.addEventListener('click', triggerUserInteraction, { once: true });
-    document.addEventListener('scroll', triggerUserInteraction, { once: true });
-    document.addEventListener('mousedown', triggerUserInteraction, { once: true });
-    document.addEventListener('touchstart', triggerUserInteraction, { once: true });
-}
-
-function triggerUserInteraction() {
-    hasUserInteracted = true;
-    if (isLazyLoadingEnabled) {
-        console.log('User interaction detected, triggering lazy load...');
-        triggerLazyModelLoad();
-    }
-}
-
-function triggerLazyModelLoad() {
-    if (!isLazyLoadingEnabled) return;
-    
-    isLazyLoadingEnabled = false;
-    console.log('Executing lazy model load...');
-    
-    // Load the first model
-    if (MODELS.length > 0) {
-        loadModel(MODELS[0].name);
-    }
-}
-
 // =============================================================================
 // UI SETUP
 // =============================================================================
@@ -1073,9 +1017,6 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Initialize Three.js
     initThreeJS();
-    
-    // Initialize lazy loading system
-    initLazyLoading();
     
     // Setup model buttons
     setupModelButtons();

@@ -206,8 +206,10 @@ window.SimeniumAssetManager = {
                     resolve(gltf);
                 },
                 (progress) => {
-                    // Progress callback
-                    console.log(`📦 Loading progress for ${url}:`, progress);
+                    // Progress callback - only log in debug mode
+                    if (window.location.search.includes('debug=true')) {
+                        console.log(`📦 Loading progress for ${url}:`, progress);
+                    }
                 },
                 (error) => {
                     if (timeoutId) clearTimeout(timeoutId);
